@@ -137,6 +137,17 @@
     if (d) { e.preventDefault(); window.parent.postMessage({ deck: d }, '*'); }
     else if (e.key === 'f') window.parent.postMessage({ deck: 'fullscreen' }, '*');
   });
+  // and horizontal swipes too (touch events don't reach the deck from inside the iframe)
+  if (window.parent !== window) {
+    let tx = null, ty = 0, tt = 0;
+    document.addEventListener('touchstart', e => { if (e.touches.length !== 1) { tx = null; return; } tx = e.touches[0].clientX; ty = e.touches[0].clientY; tt = Date.now(); }, { passive: true });
+    document.addEventListener('touchend', e => {
+      if (tx === null) return;
+      const t = e.changedTouches[0], dx = t.clientX - tx, dy = t.clientY - ty; tx = null;
+      if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy) * 1.5 || Date.now() - tt > 800) return;
+      window.parent.postMessage({ deck: dx < 0 ? 1 : -1 }, '*');
+    }, { passive: true });
+  }
 </script>
 </body>
 </html>

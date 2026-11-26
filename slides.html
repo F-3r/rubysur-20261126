@@ -1227,6 +1227,16 @@ orders-api → Redis (sessions, cart) → SQS (order events) → fulfillment</pr
     else if (e.key === 'f') toggleFs();
     else if (e.key === 'p') { peer = window.open(location.pathname + '?notes#' + (i + 1), 'deck-notes'); }
   });
+  // touch: swipe left = next, swipe right = previous (same step logic as the arrow keys); vertical swipes still scroll
+  function advance(d) { if (!stepTo(slides[i], d)) show(near(i, d)); }
+  let tx = null, ty = 0, tt = 0;
+  document.addEventListener('touchstart', e => { if (e.touches.length !== 1) { tx = null; return; } tx = e.touches[0].clientX; ty = e.touches[0].clientY; tt = Date.now(); }, { passive: true });
+  document.addEventListener('touchend', e => {
+    if (tx === null) return;
+    const t = e.changedTouches[0], dx = t.clientX - tx, dy = t.clientY - ty; tx = null;
+    if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy) * 1.5 || Date.now() - tt > 800) return;
+    advance(dx < 0 ? 1 : -1);
+  }, { passive: true });
   document.querySelectorAll('.slide.to-bottom img').forEach(img => img.addEventListener('load', () => { const sl = img.closest('.slide'); sl.scrollTop = sl.scrollHeight; }));
   window.addEventListener('hashchange', () => {
     const h = location.hash.slice(1), el = document.getElementById(h);
