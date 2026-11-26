@@ -51,8 +51,8 @@ Full text of every item is in `talk-material.md`.
 8. **The upside-down dev cycle** — the ugly prototype machine at 10000 km/hr
    - Stranger Things image
    - Flows: spec → analysis → solution design → code → verification (QA) → ship / code → verify → analysis → decide → ship. Notes: arrancar de algo tangible · el código es descartable
-   - "The code is disposable" · "Human attention is scarce" · "Build a flow that maximizes the chances to inject judgement" (→ that's where the value goes up), left-aligned list, revealed one at a time. Notes: the 3 points (yours, verbatim) + the idea (yours), verbatim
    - Dex citing Eugene Yan (via swyx): "the scarce resource is human attention, not token cost" (screenshot) + link under it: Dex Horthy · Harness engineering is not enough (ai.engineer/talks/Ib5GBkD555M)
+   - "The code is disposable" · "Human attention is scarce" · "Build a flow that maximizes the chances to inject judgement" (→ that's where the value goes up), left-aligned list, revealed one at a time. Notes: the 3 points (yours, verbatim) + the idea (yours), verbatim
    - "Judgement". Notes: inject judgment (yours), verbatim. Hook to the next section
    - Prototyping / upside-down development (yours)
    - what we are trying out (we come from openspec, agents.md and /init) — no material yet
