@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proudly Full Agentic Store</title>
+<style>
+  :root { --bg:#0d0d0f; --fg:#f4f1ea; --acc:#ff5a1f; --mut:#8a8790; --card:#18181c; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font-family: system-ui, sans-serif; }
+  header { display:flex; justify-content:space-between; align-items:center; padding:16px 24px; border-bottom:1px solid #2a2a30; background:var(--bg); }
+  .top { position:sticky; top:0; z-index:2; }
+  .logo { font-weight:900; letter-spacing:-.02em; font-size:20px; }
+  .logo span { color:var(--acc); }
+  .cart-btn { background:var(--acc); color:#000; border:0; border-radius:999px; padding:8px 16px; font-weight:800; cursor:pointer; }
+  .ticker { overflow:hidden; white-space:nowrap; background:var(--acc); color:#000; font-weight:800; padding:6px 0; }
+  .ticker div { display:inline-block; animation: tick 28s linear infinite; }
+  @keyframes tick { from { transform:translateX(0) } to { transform:translateX(-50%) } }
+  .hero { padding:64px 24px 32px; text-align:center; }
+  .hero h1 { font-size:clamp(40px, 9vw, 120px); line-height:.9; margin:0; font-weight:900; letter-spacing:-.04em; }
+  .hero p { color:var(--mut); max-width:640px; margin:20px auto 0; font-size:18px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:20px; padding:24px; max-width:1200px; margin:0 auto; }
+  .card { background:var(--card); border-radius:16px; overflow:hidden; display:flex; flex-direction:column; }
+  .card img { width:100%; aspect-ratio:1; object-fit:cover; display:block; background:#222228; }
+  .card .body { padding:16px; display:flex; flex-direction:column; gap:8px; flex:1; }
+  .card h3 { margin:0; font-size:18px; }
+  .card .desc { color:var(--mut); font-size:14px; flex:1; }
+  .card .row { display:flex; justify-content:space-between; align-items:center; }
+  .price { font-weight:800; font-size:18px; }
+  .price s { color:var(--mut); font-weight:400; font-size:14px; margin-right:6px; }
+  .add { background:var(--fg); color:#000; border:0; border-radius:8px; padding:8px 12px; font-weight:700; cursor:pointer; }
+  .badge { display:inline-block; font-size:11px; font-weight:800; background:#2b2b33; color:var(--acc); padding:3px 8px; border-radius:999px; align-self:flex-start; }
+  .reviews { max-width:1200px; margin:0 auto; padding:24px; }
+  .reviews h2 { font-size:32px; }
+  .rev { background:var(--card); border-radius:12px; padding:16px; margin-bottom:12px; }
+  .rev .who { color:var(--mut); font-size:13px; margin-top:6px; }
+  footer { color:var(--mut); font-size:13px; text-align:center; padding:40px 24px; }
+  #drawer { position:fixed; top:0; right:0; height:100%; width:min(380px, 100%); background:#111114; border-left:1px solid #2a2a30; transform:translateX(100%); transition:transform .25s; z-index:5; padding:20px; display:flex; flex-direction:column; }
+  #drawer.open { transform:none; }
+  #drawer ul { list-style:none; padding:0; flex:1; overflow:auto; }
+  #drawer li { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #222; }
+  .checkout { background:var(--acc); color:#000; border:0; border-radius:10px; padding:14px; font-weight:900; cursor:pointer; font-size:16px; }
+  #toast { position:fixed; left:50%; bottom:24px; transform:translateX(-50%); background:var(--fg); color:#000; padding:12px 18px; border-radius:10px; font-weight:700; opacity:0; transition:opacity .2s; pointer-events:none; z-index:6; max-width:90vw; text-align:center; }
+  #toast.show { opacity:1; }
+  .card img, .card h3 { cursor:zoom-in; }
+  #modal { position:fixed; inset:0; background:rgba(0,0,0,.8); display:none; align-items:center; justify-content:center; z-index:7; padding:24px; }
+  #modal.open { display:flex; }
+  #modal .box { background:var(--card); border-radius:18px; max-width:1000px; width:100%; max-height:92vh; overflow:auto; display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,1fr); position:relative; }
+  #modal img { width:100%; height:100%; object-fit:cover; display:block; background:#222228; }
+  #modal .info { padding:28px; display:flex; flex-direction:column; gap:14px; }
+  #modal h2 { margin:0; font-size:28px; line-height:1.1; }
+  #modal .desc { color:var(--mut); font-size:16px; flex:1; }
+  #modal .close { position:absolute; top:10px; right:12px; background:#000a; color:var(--fg); border:0; border-radius:999px; width:36px; height:36px; font-size:20px; cursor:pointer; }
+  @media (max-width:700px) { #modal .box { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+
+<div class="top">
+<header>
+  <div class="logo">PROUDLY <span>FULL AGENTIC</span>™ store</div>
+  <button class="cart-btn" onclick="toggleCart()">Cart (<span id="count">0</span>)</button>
+</header>
+
+<div class="ticker"><div>
+  ★ FREE SHIPPING ON ORDERS OVER 11,000 PRs ★ NOW SHIPPING NIGHTLY (STABLE) ★ ALL ITEMS REVIEWED BY THE AGENT THAT MADE THEM ★ 0 HUMANS HARMED, 0 HUMANS INVOLVED ★
+  ★ FREE SHIPPING ON ORDERS OVER 11,000 PRs ★ NOW SHIPPING NIGHTLY (STABLE) ★ ALL ITEMS REVIEWED BY THE AGENT THAT MADE THEM ★ 0 HUMANS HARMED, 0 HUMANS INVOLVED ★
+</div></div>
+</div>
+
+<section class="hero">
+  <h1>PROUDLY<br>FULL AGENTIC</h1>
+  <p>Official merch for teams that stopped reading the code. Designed by an agent, approved by an agent, shipped before anyone asked.</p>
+</section>
+
+<section class="grid" id="grid"></section>
+
+<section class="reviews">
+  <h2>Verified reviews</h2>
+  <div class="rev">★★★★★ "Great shirt. I asked my agent if it fits and it said it fits perfectly."<div class="who">— verified by the agent</div></div>
+  <div class="rev">★★★★★ "The mug had a bug. I opened a ticket, an agent fixed it, another agent approved it. Now it's a bowl."<div class="who">— staff engineer, 396 files changed</div></div>
+  <div class="rev">★☆☆☆☆ "I wanted to read the product description before buying."<div class="who">— Grandpa (account suspended)</div></div>
+</section>
+
+<footer>This is a parody store for a talk. Nothing here is for sale. No payment is collected.</footer>
+
+<aside id="drawer">
+  <h2>Your cart</h2>
+  <ul id="items"></ul>
+  <p>Total: <b id="total">$0</b></p>
+  <button class="checkout" onclick="checkout()">Let the agent check out for me</button>
+  <button class="add" style="margin-top:8px" onclick="toggleCart()">Close</button>
+</aside>
+<div id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="box">
+    <button class="close" onclick="closeModal()" aria-label="Close">×</button>
+    <img id="m-img" alt="">
+    <div class="info">
+      <span class="badge" id="m-badge"></span>
+      <h2 id="m-name"></h2>
+      <div class="desc" id="m-desc"></div>
+      <div class="row"><div class="price" id="m-price"></div><button class="add" id="m-add">Add to cart</button></div>
+    </div>
+  </div>
+</div>
+<div id="toast"></div>
+
+<script>
+const products = [
+  { name:"Old Man Yells At Cloud Tee", desc:"Vintage fit for the last engineer still reading diffs. Ships slowly, because someone checked it. HR has been notified.", price:35, badge:"Flagged as a blocker",
+    art:`<path d="M60 60 L100 40 L140 60 L180 40 L220 60 L240 100 L210 110 L210 220 L90 220 L90 110 L60 100 Z" fill="#f4f1ea"/><image href="material/old-man-yells-at-cloud.webp" x="102" y="78" width="96" height="64" preserveAspectRatio="xMidYMid slice"/><text x="150" y="168" text-anchor="middle" font-size="12" font-weight="900" fill="#0d0d0f">I STILL READ</text><text x="150" y="184" text-anchor="middle" font-size="12" font-weight="900" fill="#0d0d0f">THE CODE</text>` },
+  { name:"Meat Proxy Tee", desc:"For the human whose whole job is pasting the agent's output into Slack and Slack's complaints back into the agent. Organic, free-range, fully replaceable.", price:29, was:35, badge:"Human in the loop",
+    art:`<path d="M60 60 L100 40 L140 60 L180 40 L220 60 L240 100 L210 110 L210 210 L90 210 L90 110 L60 100 Z" fill="#f4f1ea"/><text x="150" y="140" text-anchor="middle" font-size="34" font-weight="900" fill="#0d0d0f">LGTM</text>` },
+  { name:"\"Works on my agent\" Cap", desc:"One size fits all prompts. Comes with a 40-page system prompt explaining how to wear it. The agent wears it backwards anyway and apologizes.", price:24, badge:"Hallucinated fit",
+    art:`<path d="M80 150 Q80 80 150 80 Q220 80 220 150 Z" fill="#ff5a1f"/><path d="M200 150 L265 160 L220 150 Z" fill="#ff5a1f"/><rect x="80" y="148" width="185" height="10" rx="5" fill="#c2410c"/><text x="150" y="130" text-anchor="middle" font-size="14" font-weight="900" fill="#000">WORKS ON MY AGENT</text>` },
+  { name:"Stable (Nightly) Mug", desc:"Released daily. Leaks daily. Marked stable because the PM couldn't spell \"nightly\" in the release notes.", price:18, badge:"Production ready™",
+    art:`<rect x="95" y="70" width="100" height="130" rx="10" fill="#f4f1ea"/><path d="M195 100 Q240 100 240 135 Q240 170 195 170" fill="none" stroke="#f4f1ea" stroke-width="14"/><text x="145" y="130" text-anchor="middle" font-size="16" font-weight="900" fill="#0d0d0f">STABLE</text><text x="145" y="150" text-anchor="middle" font-size="11" fill="#0d0d0f">(nightly)</text>` },
+  { name:"11K PRs Hoodie", desc:"10,926 PRs merged in October. Nobody knows what's in it, including the hoodie. Velocity-certified, value not included.", price:59, was:79, badge:"Industry-leading output",
+    art:`<path d="M70 70 L110 50 Q150 80 190 50 L230 70 L250 120 L215 125 L215 215 L85 215 L85 125 L50 120 Z" fill="#2563eb"/><text x="150" y="150" text-anchor="middle" font-size="30" font-weight="900" fill="#fff">11K PRs</text><text x="150" y="172" text-anchor="middle" font-size="11" fill="#fff">in oct</text>` },
+  { name:"Skills Starter Pack", desc:"61 skills, 6,694 lines of markdown… Your agent doesn't give a fuck, drops shit to production, and hands you the fire. Again.", price:61, badge:"Thought leadership",
+    art:`<rect x="90" y="90" width="120" height="120" rx="6" fill="#e9d8a6"/><path d="M120 90 Q150 40 180 90" fill="none" stroke="#e9d8a6" stroke-width="8"/><text x="150" y="150" text-anchor="middle" font-size="22" font-weight="900" fill="#0d0d0f">SKILL.md</text><text x="150" y="172" text-anchor="middle" font-size="11" fill="#0d0d0f">×61</text>` },
+  { name:"Rubber Stamp: ain't reading all that shit", desc:"The only code reviewer your team actually needs. Ink not included. Reading not required. Accountability sold separately (out of stock since 2025).", price:12, badge:"Replaces 3 seniors",
+    art:`<rect x="120" y="60" width="60" height="70" rx="8" fill="#8b5cf6"/><rect x="95" y="130" width="110" height="30" rx="4" fill="#4c1d95"/><text x="150" y="200" text-anchor="middle" font-size="26" font-weight="900" fill="#16a34a" transform="rotate(-8 150 195)">APPROVED</text>` },
+  { name:"Trust Issues: Learning to Let Go (paperback)", desc:"Your agent loves you and wants you to ship. Prod is a state of mind. Just <em>let go</em>.", price:99, badge:"Self-verified",
+    art:`<circle cx="150" cy="80" r="22" fill="#f4f1ea"/><rect x="138" y="102" width="24" height="70" fill="#f4f1ea" transform="rotate(25 150 135)"/><text x="150" y="215" text-anchor="middle" font-size="14" font-weight="900" fill="#ff5a1f">✓ all tests passed</text>` }
+];
+const imgs = ['grandpa-tee.png','meat-proxy-tee.png','agent-cap.png','stable-mug.png','11k-hoodie.png','skills-tote.png','aint-reading-stamp.png','trust-issues.png'];
+const cart = [];
+const grid = document.getElementById('grid');
+products.forEach((p, i) => {
+  grid.insertAdjacentHTML('beforeend', `
+    <article class="card">
+      <img src="material/merch/${imgs[i]}" alt="${p.name}" onclick="openModal(${i})">
+      <div class="body">
+        ${p.badge ? `<span class="badge">${p.badge}</span>` : ''}
+        <h3 onclick="openModal(${i})">${p.name}</h3>
+        <div class="desc">${p.desc}</div>
+        <div class="row">
+          <div class="price">${p.was ? `<s>$${p.was}</s>` : ''}$${p.price}</div>
+          <button class="add" onclick="add(${i})">Add to cart</button>
+        </div>
+      </div>
+    </article>`);
+});
+const quips = ["Added. Your agent also added 3 more things it thought you'd like.",
+  "Added to cart. Approved by the cart.", "Added. A reviewer agent has LGTM'd your purchase.",
+  "Added. Shipping estimate: nightly (stable)."];
+function toast(t) { const el = document.getElementById('toast'); el.textContent = t; el.classList.add('show'); clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('show'), 2600); }
+function render() {
+  document.getElementById('count').textContent = cart.length;
+  document.getElementById('items').innerHTML = cart.map(p => `<li><span>${p.name}</span><span>$${p.price}</span></li>`).join('');
+  document.getElementById('total').textContent = '$' + cart.reduce((s, p) => s + p.price, 0);
+}
+function add(i) { cart.push(products[i]); render(); toast(quips[Math.floor(Math.random() * quips.length)]); }
+function openModal(i) {
+  const p = products[i];
+  const img = document.getElementById('m-img');
+  img.src = 'material/merch/' + imgs[i];
+  img.alt = p.name;
+  const b = document.getElementById('m-badge');
+  b.textContent = p.badge || '';
+  b.style.display = p.badge ? '' : 'none';
+  document.getElementById('m-name').textContent = p.name;
+  document.getElementById('m-desc').innerHTML = p.desc;
+  document.getElementById('m-price').innerHTML = (p.was ? `<s>$${p.was}</s>` : '') + '$' + p.price;
+  document.getElementById('m-add').onclick = () => add(i);
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal() { document.getElementById('modal').classList.toggle('open', false); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+function toggleCart() { document.getElementById('drawer').classList.toggle('open'); }
+function checkout() {
+  if (!cart.length) return toast("Your cart is empty. The agent says it's full.");
+  toast(`Order of ${cart.length + 89} items placed. 396 files changed. Nobody reviewed it.`);
+  cart.length = 0; render();
+}
+</script>
+</body>
+</html>

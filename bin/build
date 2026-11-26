@@ -1,0 +1,27 @@
+#!/usr/bin/env python3
+"""Rebuild site/ from slides.html: copy only the files the deck uses, convert big photos to JPG."""
+import os, re, shutil, subprocess
+
+MAGICK = ['magick'] if shutil.which('magick') else ['convert']  # ImageMagick 7 locally, 6 on the CI runner
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+os.chdir(ROOT)
+PHOTOS = {'agentic-triad', 'coprolito', 'cover-agentic', 'cover-factories', 'cover-final-me', 'cover-gameengine',
+          'cover-hottakes', 'cover-nobody', 'cover-prporn', 'judgement-day', 'upside-down', 'hamlet-pr'}
+
+shutil.rmtree('site', ignore_errors=True)
+os.makedirs('site/material')
+html = open('slides.html').read()
+for ref in sorted(set(re.findall(r'material/[^"\')\s]+', html))):
+    base = os.path.splitext(os.path.basename(ref))[0]
+    if base in PHOTOS:
+        out = f'material/{base}.jpg'
+        subprocess.run(MAGICK + [ref, '-resize', '1920x1920>', '-strip', '-quality', '82', f'site/{out}'], check=True)
+        html = html.replace(ref, out)
+    else:
+        shutil.copy(ref, f'site/{ref}')
+for page in re.findall(r'(?:src|href)="([\w.-]+\.html)"', html):
+    shutil.copy(page, f'site/{page}')
+open('site/index.html', 'w').write(html)
+open('site/.nojekyll', 'w').close()
+print('site/ rebuilt')

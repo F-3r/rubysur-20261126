@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>old man yelling to the claudes</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #fff; color: #111; font-family: system-ui, sans-serif; }
+  .slide { display: none; height: 100vh; box-sizing: border-box; padding: 5vh 6vw; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+  .slide.active { display: flex; }
+  .slide { background-color: #fff; }
+  .slide.cover h1 { font-size: 9vw; margin: 0; }
+  .slide.cover h1.stack { line-height: 1; }
+  .slide.cover h1.stack small { font-size: .45em; font-weight: 400; }
+  /* 2nd game-engine cover: diff-style edit; the emoji hangs below so both covers keep the same title position */
+  .slide.cover h1.stack { position: relative; }
+  .slide.cover h1 .emo { position: absolute; left: 50%; top: 100%; transform: translateX(-50%); }
+  .slide.cover h1 del, .slide.cover h1 ins { text-decoration: none; padding: 0 .12em; border-radius: .08em; }
+  .slide.cover h1 del { background: #ffd7d5; color: #82071e; }
+  .slide.cover h1 ins { background: #ccffd8; color: #055d20; }
+  .slide img { max-width: 90vw; max-height: 80vh; }
+  .slide.scroll { overflow-y: auto; justify-content: flex-start; }
+  .slide.scroll img { width: min(90vw, 1266px); max-width: none; max-height: none; }
+  .slide.full { padding: 0; background: #000; }
+  .slide.full img { width: 100vw; height: 100vh; max-width: none; max-height: none; object-fit: contain; }
+  .steps .step { opacity: 0; pointer-events: none; transition: opacity .25s; }
+  .steps .step.on { pointer-events: auto; }
+  .steps .step.on { opacity: 1; }
+  .steps .unstep { transition: opacity .25s; }
+  .steps .unstep.on { opacity: 0; pointer-events: none; }
+  svg a { color: inherit; }
+  .slide .aside-h { font: italic 400 4vw "Hoefler Text", Georgia, serif; margin: 0; }
+  .slide.tv { line-height: 1; }
+  .slide.tv b { font-size: 15vw; font-weight: 900; letter-spacing: -.02em; }
+  .slide.tv span { font-size: 3.5vw; margin: 2vh 0; color: var(--muted, #555); }
+  .slide.pts { align-items: flex-start; text-align: left; padding: 6vh 8vw; }
+  .slide.pts ol { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6vh; }
+  .slide.pts b { font-size: 3.2vw; line-height: 1.15; }
+  .slide.pts small { display: block; font-size: 1.7vw; color: var(--muted, #555); margin-top: .8vh; }
+  .slide.pts.dense ol { gap: 3.5vh; }
+  .slide.pts.dense b { font-size: 2.4vw; }
+  .slide.pts.dense small { font-size: 1.5vw; }
+  .slide.stat .big { font: 900 13vw/1 system-ui, sans-serif; letter-spacing: -.03em; }
+  .slide.stat .sub { font: italic 400 4vw "Hoefler Text", Georgia, serif; margin: 1vh 0 5vh; }
+  .slide.stat ul { list-style: none; padding: 0; margin: 0; display: flex; gap: 4vw; font-size: 2.2vw; }
+  .slide.stat li b { display: block; font-size: 4.5vw; font-weight: 900; }
+  .slide.eras { position: relative; }
+  .slide.eras cite { position: absolute; left: 0; right: 0; bottom: 6vh; text-align: center; }
+  .slide.stat cite, .slide.eras cite { margin-top: 5vh; font: 600 1.3vw system-ui, sans-serif; font-style: normal; }
+  .slide.stat cite a, .slide.eras cite a { color: inherit; }
+  .slide.eras .row { display: flex; align-items: flex-start; gap: 2vw; justify-content: center; }
+  .slide.eras .era { font: 800 3.6vw/1 system-ui, sans-serif; text-align: center; }
+  .slide.eras .era small { display: block; font-size: 1.6vw; font-weight: 400; color: var(--muted, #555); margin-top: 1.2vh; }
+  .slide.eras .arrow { font-size: 3.6vw; line-height: 1; color: var(--muted, #999); }
+  .slide.claim b { font: 900 5vw/1.1 system-ui, sans-serif; max-width: 80vw; letter-spacing: -.01em; }
+  .slide.claim.list { align-items: flex-start; text-align: left; padding-left: 10vw; }
+  .slide.claim.list b { display: block; }
+  /* Judgement: after 5s the word starts turning white and glowing (10s); at 8s the apocalypse starts fading in (12s) */
+  .slide.claim.huge { position: relative; overflow: hidden; }
+  .slide.claim.huge::before { content: ""; position: absolute; inset: 0; background: #000 url(material/judgement-day.png) center / cover no-repeat; opacity: 0; }
+  .slide.claim.huge b { position: relative; color: var(--fg, #111); }
+  .slide.claim.huge.active::before { animation: jd-fade 12s ease-in-out 8s both; }
+  .slide.claim.huge.active b { animation: jd-word 10s ease-in-out 5s both; }
+  @keyframes jd-fade { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes jd-word {
+    from { color: var(--fg, #111); text-shadow: 0 0 0 rgba(255,40,20,0), 0 0 0 rgba(0,0,0,0); }
+    to { color: #fff; text-shadow: 0 0 2vw rgba(255,40,20,.6), 0 .4vw 1.2vw rgba(0,0,0,.9); }
+  }
+  .slide.claim.huge b { font-size: 17vw; letter-spacing: -.05em; line-height: .9; max-width: none; }
+  .slide.claim b.next { margin-top: 8vh; }
+  .slide.claim small { display: block; font-size: 2.2vw; color: var(--muted, #555); margin-top: 4vh; }
+  .slide.pq { flex-direction: column; gap: 3vh; }
+  .slide.pq img { max-width: 86vw; max-height: 58vh; }
+  .slide.pq blockquote { margin: 0 8vw; font: 400 2.6vw/1.3 "Hoefler Text", Georgia, serif; }
+  .slide.pq cite { display: block; margin-top: 1.5vh; font: 600 1.3vw system-ui, sans-serif; font-style: normal; }
+  .slide.pq cite a { color: inherit; }
+  .slide.bounce { position: relative; overflow: hidden; }
+  .slide.bounce blockquote { position: relative; z-index: 1; }
+  /* bouncing concepts: emoji + neon tag, squash on wall hits, bump into each other, click to kick */
+  .slide.bounce .bw { position: absolute; left: 0; top: 0; z-index: 0; width: 12vw; height: 12vw; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; cursor: pointer; user-select: none; will-change: transform; }
+  .slide.bounce .bw i { font-style: normal; font-size: 6vw; line-height: 1; display: block; will-change: transform; filter: drop-shadow(0 .4vw .6vw rgba(0,0,0,.5)); }
+  .slide.bounce .bw b { margin-top: .6vw; padding: .25vw .8vw; border-radius: 99px; font: 700 1.1vw/1.1 Menlo, "SF Mono", monospace; white-space: nowrap; color: #0e110c; background: #a6ff3a; box-shadow: 0 0 1vw rgba(166,255,58,.7); }
+  .slide.bounce .bw:nth-child(1) b { background: #ff8a7a; box-shadow: 0 0 1vw rgba(255,120,100,.7); }
+  .slide.bounce .bw:nth-child(3) b { background: #ffb3e6; box-shadow: 0 0 1vw rgba(255,150,220,.7); }
+  .slide.bounce .bw:nth-child(4) b { background: #ffd84a; box-shadow: 0 0 1vw rgba(255,210,70,.7); }
+  .slide.quote blockquote { margin: 0 8vw; font: 400 3.6vw/1.3 "Hoefler Text", Georgia, serif; text-align: left; }
+  .slide.quote cite { display: block; margin-top: 4vh; font: 600 1.6vw system-ui, sans-serif; font-style: normal; }
+  .slide.quote cite a { color: inherit; }
+  svg rect.diff { fill: #dafbe1; stroke: none; }
+  .slide.hamlet { position: relative; }
+  .slide.hamlet img { object-fit: cover; }
+  .slide.hamlet::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 42vh; background: linear-gradient(rgba(0,0,0,.65), transparent); pointer-events: none; z-index: 1; }
+  .hamlet-title { position: absolute; top: 8vh; z-index: 2; display: flex; flex-direction: column; line-height: 1.1; filter: drop-shadow(0 0 1.2vw rgba(255,154,46,.45)) drop-shadow(0 .3vw .6vw rgba(0,0,0,.8)); }
+  .hamlet-title.left { left: 4vw; align-items: flex-start; }
+  .hamlet-title.right { right: 4vw; align-items: flex-end; }
+  .hamlet-title span, .hamlet-title b { background: linear-gradient(#fff1bf, #e6c06a 55%, #a8761f); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hamlet-title span { font: italic 400 2.8vw "Hoefler Text", Georgia, serif; margin: 0 .3vw 1.8vh; }
+  .hamlet-title b { font: 400 5.8vw "Big Caslon", "Hoefler Text", Georgia, serif; text-transform: uppercase; letter-spacing: .04em; }
+  .notes { display: none; }
+  /* coprolito: jewel-of-poop photo, title on the dark left half */
+  .slide.copro { background: #000 !important; align-items: flex-start; text-align: left; padding: 0 0 0 7vw; color: #fff; }
+  .slide.copro::before { content: ""; position: absolute; inset: 0; background: #000 url(material/coprolito.png) center / cover no-repeat; opacity: 0; }
+  .slide.copro.active::before { animation: jd-fade 7s ease-in-out 1s both; }
+  .slide.copro > * { position: relative; }
+  .slide.copro h1 { font: italic 400 10vw/1 "Hoefler Text", Georgia, serif; margin: 0; background: linear-gradient(#fff1bf, #e6c06a 55%, #a8761f); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .slide.copro .play { position: absolute; left: 7vw; bottom: 7vh; font-size: 1.6vw; color: #e6c06a; text-decoration: none; border: 1px solid #e6c06a; border-radius: 99px; padding: .5vh 1.2vw; }
+  .slide.copro { position: relative; }
+  .slide.copro p { font-size: 3vw; margin: 2vh 0 0 .5vw; color: #ddd; }
+  /* upside-down cover: 80s horror title, hollow red letters with glow */
+  .slide.updown { background: #000 url(material/upside-down.png) center / cover no-repeat; }
+  .slide.updown h1 { display: flex; flex-direction: column; align-items: center; margin: 0; font: 700 7vw/1 "ITC Benguiat", "Benguiat", "Big Caslon", "Times New Roman", serif; letter-spacing: .02em; color: transparent; -webkit-text-stroke: .12vw #ff2a1a; text-shadow: 0 0 .6vw rgba(255,40,20,.9), 0 0 2.5vw rgba(255,30,10,.6); }
+  .slide.updown h1 big { font-size: 1.25em; line-height: .8; }
+  .slide.updown h1 .l2 { font-size: .62em; letter-spacing: .12em; margin-top: 1.2vh; }
+  .slide.updown h1 .bar { display: block; width: 62vw; height: .35vw; margin: 1.6vh 0; background: #ff2a1a; box-shadow: 0 0 .8vw rgba(255,40,20,.9), 0 0 2.5vw rgba(255,30,10,.6); }
+  .slide.updown h1 .bar:last-child { width: 40vw; }
+  /* dev cycle: classic flow on top, upside-down flow revealed below in red glow */
+  .slide.cycle { background: #07080c; color: #c9ccd6; gap: 12vh; }
+  .slide.cycle .row { display: flex; align-items: baseline; justify-content: center; gap: 1.2vw; font: 700 2.4vw/1 system-ui, sans-serif; white-space: nowrap; }
+  .slide.cycle .row i { font-style: normal; color: #555a66; }
+  .slide.cycle .row small { font-size: .6em; font-weight: 400; color: #8a8f9c; }
+  .slide.cycle .new { font-size: 3.6vw; color: #ff3b2a; text-shadow: 0 0 .6vw rgba(255,40,20,.8), 0 0 2vw rgba(255,30,10,.5); }
+  .slide.cycle .new i { color: #ff3b2a; }
+
+  /* ===== section moods: each cover sets the palette; the slides after it inherit it (sec-* class set in JS) ===== */
+  .slide.sec-nobody  { --bg: #efe9dc; --fg: #2a2620; --muted: #6b6355; --accent: #8a6a3a; --hf: "American Typewriter", "Courier New", serif; }
+  .slide.sec-agentic { --bg: #0e110c; --fg: #e4eed6; --muted: #8fa07a; --accent: #a6ff3a; --hf: Menlo, "SF Mono", monospace; }
+  .slide.sec-prporn  { --bg: #1b0c20; --fg: #ffe9f5; --muted: #c995b8; --accent: #ff3fa4; --hf: "Snell Roundhand", "Brush Script MT", cursive; }
+  .slide.sec-review  { --bg: #140d08; --fg: #f3e6cc; --muted: #b49a6e; --accent: #e6c06a; --hf: "Big Caslon", "Hoefler Text", Georgia, serif; }
+  .slide.sec-hot     { --bg: #fff3e6; --fg: #2a1208; --muted: #8a5a3c; --accent: #ff4a1a; --hf: Impact, "Haettenschweiler", "Arial Narrow Bold", sans-serif; }
+  .slide.sec-factory { --bg: #e2dfd8; --fg: #1c1b19; --muted: #5d5a55; --accent: #b5481d; --hf: Stencil, "Stencil Std", Impact, sans-serif; }
+  .slide.sec-game    { --bg: #070b18; --fg: #e8f1ff; --muted: #7d8bb0; --accent: #39e6ff; --hf: "Courier New", Menlo, monospace; }
+  .slide.sec-updown  { --bg: #07080c; --fg: #c9ccd6; --muted: #8a8f9c; --accent: #ff3b2a; --hf: "Big Caslon", "Times New Roman", serif; }
+  .slide[class*="sec-"]:not(.full):not(.ticket):not(.chat):not(.qa) { background-color: var(--bg); color: var(--fg); }
+  .slide[class*="sec-"] .aside-h { color: var(--accent); }
+  .slide[class*="sec-"] a { color: var(--accent); }
+  .slide[class*="sec-"] cite a { color: inherit; }
+  .slide[class*="sec-"] svg a { color: inherit; }
+  .slide[class*="sec-"].pts b, .slide[class*="sec-"].claim b, .slide[class*="sec-"].tv b { color: var(--fg); }
+  .slide.sec-hot.tv b, .slide.sec-hot .era { font-family: var(--hf); font-weight: 400; letter-spacing: .01em; }
+  .slide.sec-factory.claim.list b { font-family: var(--hf); font-weight: 400; letter-spacing: .02em; }
+  .slide.sec-agentic.quote blockquote, .slide.sec-agentic.pq blockquote { font-family: Menlo, monospace; font-size: 2.6vw; }
+  .slide.sec-agentic.bounce .bw { opacity: .85; }
+  .slide.sec-prporn.pq blockquote { font-style: italic; }
+  .slide.sec-prporn.tv b { color: var(--accent); text-shadow: 0 0 1vw rgba(255,63,164,.7); }
+  .slide.sec-game.tv b, .slide.sec-game h1 { text-shadow: .25vw 0 rgba(255,0,140,.6), -.25vw 0 rgba(0,230,255,.6); }
+  .slide[class*="sec-"] img { box-shadow: 0 .6vw 2.4vw rgba(0,0,0,.35); }
+  .slide.full img, .slide.copro img { box-shadow: none; }
+
+  /* ===== section covers: full-bleed generated image + own title treatment ===== */
+  .slide.cover[class*="c-"] { position: relative; background: #000 center / cover no-repeat; overflow: hidden; }
+  .slide.cover[class*="c-"] h1 { position: relative; z-index: 1; }
+  .slide.cover.c-nobody { background-image: url(material/cover-nobody.png); }
+  .slide.c-nobody h1 { font: 400 8vw/1 "American Typewriter", "Courier New", serif; color: #2a2620; text-shadow: 0 0 2vw rgba(255,255,255,.9), 0 0 5vw rgba(255,255,255,.7); letter-spacing: -.01em; }
+  .slide.cover.c-agentic { background-image: url(material/cover-agentic.png); }
+  .slide.c-agentic h1 { font: 800 10vw/1 Menlo, "SF Mono", monospace; text-transform: uppercase; letter-spacing: -.04em; color: #b6ff4a; text-shadow: 0 0 1vw rgba(166,255,58,.9), 0 0 4vw rgba(80,255,40,.5), 0 .4vw 0 #1d3a0a; }
+  .slide.cover.c-prporn { background-image: url(material/cover-prporn.png); }
+  .slide.c-prporn h1 { font: 400 13vw/1 "Snell Roundhand", "Brush Script MT", cursive; color: #ffe0f1; text-shadow: 0 0 .5vw #fff, 0 0 1.5vw #ff3fa4, 0 0 4vw #ff3fa4, 0 0 8vw #c0007a; }
+  .slide.cover.c-hot { background-image: url(material/cover-hottakes.png); justify-content: flex-start; padding-top: 14vh; }
+  .slide.c-hot h1 { font: 400 14vw/1 Impact, "Haettenschweiler", sans-serif; text-transform: uppercase; letter-spacing: .01em; background: linear-gradient(#fff6c8, #ffb02e 40%, #ff4a1a 75%, #b31200); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 0 2vw rgba(255,90,20,.6)); }
+  .slide.cover.c-factory { background-image: url(material/cover-factories.png); }
+  .slide.c-factory::before { content: ""; position: absolute; inset: 0; background: linear-gradient(rgba(0,0,0,.15), rgba(0,0,0,.55)); }
+  .slide.c-factory h1 { font: 400 9vw/1 Stencil, "Stencil Std", Impact, sans-serif; text-transform: uppercase; letter-spacing: .03em; color: #f1e4cf; text-shadow: 0 .3vw 0 #6b2a10, 0 0 3vw rgba(0,0,0,.8); }
+  .slide.cover.c-game { background-image: url(material/cover-gameengine.png); }
+  .slide.c-game::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: repeating-linear-gradient(rgba(0,0,0,.25) 0 2px, transparent 2px 4px), radial-gradient(transparent 55%, rgba(0,0,0,.6)); }
+  .slide.c-game h1 { font: 700 7.5vw/1 "Courier New", Menlo, monospace; text-transform: uppercase; color: #eaffff; letter-spacing: -.02em; text-shadow: .3vw 0 rgba(255,0,140,.8), -.3vw 0 rgba(0,230,255,.8), 0 0 3vw rgba(57,230,255,.6); }
+  .slide.c-game h1 small { text-transform: none; }
+  .slide.c-game h1 del { background: #ff3b5c; color: #fff; text-shadow: none; }
+  .slide.c-game h1 ins { background: #2bd96b; color: #04220f; text-shadow: none; }
+  /* talk cover: the "old man yells at cloud" newspaper clipping, crisp, with my photo */
+  .slide.talk-cover { background: linear-gradient(90deg, #a8a39b 0 58%, #5b3f5f 58%); overflow: hidden; }
+  .slide.talk-cover .paper { width: 74vw; box-sizing: border-box; padding: 3vh 2.6vw 3.5vh; background: #e9e7e0; color: #1d1b19; transform: rotate(-3.5deg); box-shadow: 0 1.5vw 3vw rgba(0,0,0,.45), inset 0 0 6vw rgba(120,110,90,.18); clip-path: polygon(0 1%, 100% 0, 99.4% 100%, 85% 98.6%, 84% 100%, .6% 99%); }
+  .slide.talk-cover h1 { margin: 0 0 2.4vh; font: 900 4.4vw/1 "Futura", "Futura-CondensedExtraBold", Impact, sans-serif; letter-spacing: -.02em; text-align: center; white-space: nowrap; color: #1d1b19; }
+  .slide.talk-cover .body { display: flex; gap: 2.2vw; align-items: flex-start; }
+  .slide.talk-cover figure { margin: 0; flex: 0 0 60%; }
+  .slide.talk-cover figure img { display: block; width: 100%; max-width: none; max-height: none; border: .35vw solid #1d1b19; filter: contrast(1.08) saturate(1.1); box-shadow: none !important; }
+  .slide.talk-cover figcaption { margin-top: 1.4vh; font: 400 1.9vw/1.25 "Times New Roman", Times, serif; text-align: left; }
+  .slide.talk-cover p { margin: 0; font: 400 2.25vw/1.28 "Times New Roman", Times, serif; text-align: left; hyphens: auto; }
+  .slide.talk-cover p b { font-weight: 700; }
+  .slide.talk-cover.active .paper { animation: tc-spin .9s cubic-bezier(.2,1.1,.3,1) .15s both; }
+  @keyframes tc-spin { from { opacity: 0; transform: rotate(-740deg) scale(.05); } to { opacity: 1; transform: rotate(-3.5deg) scale(1); } }
+  /* agentic triad: wild generated scene, labels laid over it */
+  .slide.triad { position: relative; overflow: hidden; background: #0b0518 url(material/agentic-triad.png) center / cover no-repeat !important; }
+  .slide.triad .lbl { position: absolute; transform: translate(-50%, -50%); font: 300 2.6vw/1 system-ui, sans-serif; text-transform: uppercase; letter-spacing: .28em; color: #fff; white-space: nowrap; }
+  .slide.triad .l-model { left: 58.5%; top: 14%; transform: translate(0, -50%); color: #c9b6ff; text-shadow: 0 0 1.2vw rgba(150,110,255,.7); }
+  .slide.triad .l-core { left: 50%; top: 63%; font-size: 1.5vw; letter-spacing: .4em; color: #ffe2a8; text-shadow: 0 0 1vw rgba(255,200,110,.6); }
+  .slide.triad .l-agent { left: 30%; top: 91%; color: #a6f2ff; text-shadow: 0 0 1.2vw rgba(60,220,255,.6); }
+  .slide.triad .l-flow { left: 70%; top: 93%; color: #ffd08a; text-shadow: 0 0 1.2vw rgba(255,170,50,.6); }
+  /* traditional SDLC diagram: agentic cover image behind a dark veil, glassy dark boxes, toxic-green accents */
+  .slide.sdlc { position: relative; background: #0e110c url(material/cover-agentic.png) center / cover no-repeat !important; color: #e4eed6 !important; }
+  .slide.sdlc::before { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(8,12,6,.82) 35%, rgba(8,12,6,.55) 100%); }
+  .slide.sdlc svg { position: relative; }
+  .slide.sdlc rect:not(.diff) { fill: rgba(14,20,10,.2); stroke: #a6ff3a; filter: url(#sdlc-glow); }
+  .slide.sdlc path { stroke: #a6ff3a; }
+  .slide.sdlc rect.diff { fill: rgba(166,255,58,.28); }
+  .slide.sdlc tspan[fill="#d1242f"] { fill: #ff6b5e; }
+  .slide.sdlc marker path { fill: #a6ff3a; }
+  .slide.sdlc svg > text:first-of-type { fill: #b6ff4a; font-family: Menlo, "SF Mono", monospace; text-transform: uppercase; filter: url(#sdlc-tglow); }
+  /* factories section: content slides sit on the cover's junkyard image behind a dark veil, cover-style type */
+  .slide.sec-factory:not(.cover):not(.huge) { position: relative; background: #1c1b19 url(material/cover-factories.png) center / cover no-repeat !important; color: #f1e4cf !important; --fg: #f1e4cf; --muted: #cbbfae; --accent: #f08a4b; }
+  .slide.sec-factory:not(.cover):not(.huge)::before { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(20,16,12,.78) 30%, rgba(20,16,12,.55) 100%); pointer-events: none; }
+  .slide.sec-factory:not(.cover):not(.huge) > * { position: relative; }
+  .slide.sec-factory:not(.cover):not(.huge) img { box-shadow: 0 0 0 .3vw #6b2a10, 0 1vw 3vw rgba(0,0,0,.7); }
+  .slide.sec-factory.claim.list b { font-family: Stencil, "Stencil Std", Impact, sans-serif; text-transform: uppercase; letter-spacing: .03em; color: #f1e4cf; text-shadow: 0 .25vw 0 #6b2a10, 0 0 2vw rgba(0,0,0,.8); }
+  .slide.sec-factory.claim.list small { color: #e0b48c; }
+  /* moved to the end, inside the upside-down section: upside-down image behind a dark veil, red neon type */
+  .slide.sec-updown:not(.updown):not(.cycle):not(.huge) { position: relative; background: #07080c url(material/upside-down.png) center / cover no-repeat !important; color: #e9e2e2 !important; --fg: #e9e2e2; --muted: #c9a3a0; --accent: #ff5a4a; }
+  .slide.sec-updown:not(.updown):not(.cycle):not(.huge)::before { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(5,6,10,.8) 30%, rgba(5,6,10,.5) 100%); pointer-events: none; }
+  .slide.sec-updown:not(.updown):not(.cycle):not(.huge) > * { position: relative; }
+  .slide.sec-updown.pq img { box-shadow: 0 0 0 .25vw #ff3b2a, 0 0 2.5vw rgba(255,40,20,.6), 0 1vw 3vw rgba(0,0,0,.7); }
+  .slide.sec-updown.claim.list b { font-family: "ITC Benguiat", "Benguiat", "Big Caslon", "Times New Roman", serif; font-weight: 700; font-size: 3.6vw; line-height: 1.15; text-transform: uppercase; letter-spacing: .02em; color: transparent; -webkit-text-stroke: .09vw #ff2a1a; text-shadow: 0 0 .5vw rgba(255,40,20,.9), 0 0 2vw rgba(255,30,10,.55); }
+  .slide.sec-updown.claim.list small { color: #ffb1a8; }
+  .slide.sec-updown.claim.huge { --fg: #ff3b2a; background-color: #07080c !important; }
+  /* presenter view: slide scaled down as a whole (keeps 16:9 and vw-based sizes), notes in a pane on the right */
+  body.show-notes { background: #222; overflow: hidden; }
+  body.show-notes .slide.active { transform: translate(1.5vw, 20vh) scale(.6); transform-origin: top left; box-shadow: 0 0 0 1px #555; }
+  #notes { display: none; position: fixed; top: 0; right: 0; bottom: 0; width: 36vw; overflow: auto; box-sizing: border-box; padding: 3vh 2vw; background: #f2f2f2; border-left: 1px solid #ccc; text-align: left; font-size: 18px; }
+  body.show-notes #notes { display: block; }
+  #counter { position: fixed; right: 12px; bottom: 8px; font-size: 12px; color: #888; }
+  body.show-notes #counter { left: 1.5vw; right: auto; bottom: 14vh; font-size: 16px; color: #aaa; }
+
+  /* issue tracker ticket mock */
+  .slide.ticket { background: #f4f5f7; }
+  .tk { width: min(92vw, 1266px); margin: 0 auto 6vh; background: #fff; border: 1px solid #dfe1e6; border-radius: 6px; box-shadow: 0 1px 3px rgba(9,30,66,.15); text-align: left; color: #172b4d; font: 14px/1.5 -apple-system, "Segoe UI", system-ui, sans-serif; }
+  .tk-top { padding: 16px 24px 0; font-size: 13px; color: #5e6c84; }
+  .tk-top a { color: #5e6c84; text-decoration: none; }
+  .tk-key { display: inline-flex; align-items: center; gap: 6px; }
+  .tk-epic-ico { display: inline-block; width: 16px; height: 16px; border-radius: 3px; background: #904ee2; color: #fff; font-size: 11px; line-height: 16px; text-align: center; }
+  .tk-sub-ico { display: inline-block; width: 16px; height: 16px; border-radius: 3px; background: #4bade8; color: #fff; font-size: 10px; line-height: 16px; text-align: center; }
+  .tk h1 { font-size: 24px; font-weight: 500; margin: 8px 24px 12px; line-height: 1.3; }
+  .tk-actions { margin: 0 24px 16px; display: flex; gap: 8px; }
+  .tk-btn { background: #f4f5f7; border-radius: 3px; padding: 4px 10px; font-size: 14px; color: #42526e; }
+  .tk-body { display: grid; grid-template-columns: 1fr 320px; gap: 32px; padding: 0 24px 24px; }
+  .tk-main h2 { font-size: 16px; font-weight: 600; margin: 24px 0 8px; }
+  .tk-main h2:first-child { margin-top: 0; }
+  .tk-main h3 { font-size: 14px; font-weight: 600; margin: 16px 0 6px; }
+  .tk-main ul, .tk-main ol { margin: 4px 0 8px; padding-left: 24px; }
+  .tk-main li { margin: 2px 0; }
+  .tk-main code { background: #f4f5f7; border-radius: 3px; padding: 1px 4px; font: 12.5px ui-monospace, SFMono-Regular, Menlo, monospace; color: #172b4d; }
+  .tk-main pre { background: #f4f5f7; border: 1px solid #dfe1e6; border-radius: 3px; padding: 10px 12px; overflow-x: auto; font: 12.5px/1.45 ui-monospace, SFMono-Regular, Menlo, monospace; margin: 8px 0; }
+  .tk-main table { border-collapse: collapse; width: 100%; margin: 8px 0; font-size: 13.5px; }
+  .tk-main th, .tk-main td { border: 1px solid #dfe1e6; padding: 6px 10px; vertical-align: top; text-align: left; }
+  .tk-main th { background: #f4f5f7; font-weight: 600; }
+  .tk-label-desc { font-size: 12px; font-weight: 600; color: #5e6c84; margin: 0 0 8px; }
+  .tk-check { list-style: none; padding-left: 4px !important; }
+  .tk-check li::before { content: ""; display: inline-block; width: 14px; height: 14px; border: 2px solid #c1c7d0; border-radius: 3px; margin-right: 8px; vertical-align: -3px; }
+  .tk-side { font-size: 14px; }
+  .tk-status { display: inline-block; background: #dfe1e6; color: #42526e; font-weight: 600; font-size: 13px; text-transform: uppercase; border-radius: 3px; padding: 4px 10px; margin-bottom: 16px; }
+  .tk-panel { border: 1px solid #dfe1e6; border-radius: 3px; }
+  .tk-panel-h { padding: 10px 12px; border-bottom: 1px solid #dfe1e6; font-weight: 600; }
+  .tk-row { display: grid; grid-template-columns: 110px 1fr; gap: 8px; padding: 8px 12px; }
+  .tk-row > span:first-child { color: #5e6c84; font-weight: 600; font-size: 12.5px; padding-top: 1px; }
+  .tk-avatar { display: inline-block; width: 22px; height: 22px; border-radius: 50%; background: #dfe1e6; color: #5e6c84; font-size: 11px; line-height: 22px; text-align: center; margin-right: 6px; vertical-align: middle; }
+  .tk-prio { color: #de350b; font-weight: 700; margin-right: 4px; }
+  .tk-lbl { display: inline-block; background: #dfe1e6; color: #253858; border-radius: 3px; padding: 0 6px; margin: 0 4px 4px 0; font-size: 12px; }
+  .tk-comp { display: inline-block; margin-right: 6px; color: #0052cc; }
+  .tk-link { color: #0052cc; }
+  .tk-children { border: 1px solid #dfe1e6; border-radius: 3px; }
+  .tk-child { display: grid; grid-template-columns: 22px 70px 1fr 40px 90px; align-items: center; gap: 8px; padding: 6px 10px; border-top: 1px solid #ebecf0; font-size: 13.5px; }
+  .tk-child:first-child { border-top: 0; }
+  .tk-child .k { color: #0052cc; }
+  .tk-child .e { color: #5e6c84; text-align: right; }
+  .tk-child .s { background: #dfe1e6; color: #42526e; font-size: 11px; font-weight: 700; border-radius: 3px; padding: 0 6px; text-align: center; }
+  .tk-progress { height: 8px; background: #dfe1e6; border-radius: 4px; margin: 6px 0 10px; }
+  .tk-meta { font-size: 12px; color: #6b778c; padding: 12px 12px 0; }
+  @media (max-width: 900px) { .tk-body { grid-template-columns: 1fr; } }
+  /* chat mock */
+  .slide.chat { background: #f4f4f2; }
+  .ch { width: min(80vw, 1000px); height: 70vh; background: #fff; border: 1px solid #ddd; border-radius: 14px; box-shadow: 0 8px 30px rgba(0,0,0,.08); display: flex; flex-direction: column; text-align: left; overflow: hidden; }
+  .ch-top { display: flex; align-items: center; gap: 8px; padding: 14px 18px; border-bottom: 1px solid #eee; }
+  .ch-dot { width: 12px; height: 12px; border-radius: 50%; background: #ddd; }
+  .ch-title { margin-left: 12px; color: #777; font-size: 15px; }
+  .ch-log { flex: 1; padding: 6vh 4vw; display: flex; flex-direction: column; gap: 4vh; }
+  .ch-msg { display: flex; gap: 16px; align-items: flex-start; justify-content: flex-end; }
+  .ch-msg .ch-av { order: 2; flex: none; width: 44px; height: 44px; border-radius: 50%; background: #333; color: #fff; font-weight: 700; display: grid; place-items: center; font-size: 18px; }
+  .ch-bubble { background: #efefec; border-radius: 18px; padding: 18px 24px; font-size: 2.2vw; line-height: 1.35; max-width: 80%; }
+  .ch-typing { display: flex; gap: 8px; padding-left: 8px; }
+  .ch-typing span { width: 12px; height: 12px; border-radius: 50%; background: #bbb; animation: chb 1.2s infinite; }
+  .ch-typing span:nth-child(2) { animation-delay: .2s; } .ch-typing span:nth-child(3) { animation-delay: .4s; }
+  @keyframes chb { 0%, 80%, 100% { opacity: .3; } 40% { opacity: 1; } }
+  .ch-input { margin: 0 18px 18px; border: 1px solid #ddd; border-radius: 14px; padding: 14px 18px; color: #aaa; display: flex; justify-content: space-between; align-items: center; font-size: 16px; }
+  .ch-send { width: 32px; height: 32px; border-radius: 50%; background: #ccc; color: #fff; display: grid; place-items: center; }
+
+  /* qa report */
+  .slide.qa { background: #f4f5f7; }
+  .qa-doc { width: min(92vw, 1266px); margin: 0 auto 6vh; background: #fff; border: 1px solid #dfe1e6; border-radius: 6px; padding: 28px 32px; text-align: left; color: #172b4d; font: 14px/1.5 -apple-system, "Segoe UI", system-ui, sans-serif; box-sizing: border-box; }
+  .qa-h { display: flex; justify-content: space-between; align-items: center; gap: 24px; }
+  .qa-k { color: #5e6c84; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+  .qa-h h1 { font-size: 26px; font-weight: 600; margin: 6px 0 0; }
+  .qa-doc { position: relative; }
+  .qa-stamp { position: absolute; top: 90px; left: 50%; width: 900px; max-width: 80%; max-height: none; transform: translateX(-50%) rotate(-8deg); mix-blend-mode: multiply; opacity: .9; pointer-events: none; z-index: 2; }
+  .qa-sum { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin: 20px 0; }
+  .qa-sum div { background: #f4f5f7; border-radius: 6px; padding: 12px; text-align: center; }
+  .qa-sum b { display: block; font-size: 28px; }
+  .qa-sum span { color: #5e6c84; font-size: 12px; text-transform: uppercase; }
+  .qa-doc table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+  .qa-doc th, .qa-doc td { border-bottom: 1px solid #ebecf0; padding: 8px 10px; text-align: left; vertical-align: top; }
+  .qa-doc th { color: #5e6c84; font-size: 12px; text-transform: uppercase; }
+  .qa-doc code { background: #f4f5f7; border-radius: 3px; padding: 1px 4px; font: 12.5px ui-monospace, Menlo, monospace; }
+  .qa-sev { font-size: 11px; font-weight: 700; border-radius: 3px; padding: 1px 6px; text-transform: uppercase; }
+  .qa-medium { background: #fff0b3; color: #974f0c; } .qa-low { background: #deebff; color: #0747a6; } .qa-info { background: #dfe1e6; color: #42526e; }
+  .qa-more { color: #6b778c; text-decoration: underline; margin: 14px 0 0; }
+</style>
+</head>
+<body>
+
+<!-- 0. cover -->
+<section class="slide full">
+  <img src="material/cover-final-me.png" alt="Newspaper: Old man yells at cloud, with my photo stuck over the picture">
+</section>
+
+<!-- 1. nobody know nothing -->
+<section class="slide cover c-nobody" data-sec="nobody">
+  <h1>Nobody knows Nothing</h1>
+  <aside class="notes">
+    <ul>
+      <li>disclaimer and intro</li>
+      <li>This section will be an intro, telling a little bit about what we did before, what I did before with AI and things.</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide">
+  <img src="material/werner-nobody-knows.png" alt="Scott Werner, Works on my Machine: Nobody Knows How To Build With AI Yet. The future of software development might just be jazz. Everyone improvising. Nobody following the sheet music. Jul 19, 2025">
+  <aside class="notes">
+    <ul>
+      <li>this was one of the slides on a talk I gave 1 year ago, and I think it still applies.</li>
+      <li>show the title, next slide, this screenshot</li>
+      <li>explain a little bit what we did, do a quick summary of that talk.</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide triad">
+  <div class="lbl l-model">Model</div>
+  <div class="lbl l-core">Agentic Triad</div>
+  <div class="lbl l-agent">Agent</div>
+  <div class="lbl l-flow">Workflow</div>
+  <aside class="notes">
+    <ul>
+      <li>That talk talks about the agentic triad: a triangle that represents the balance between the model, the agent/harness, and the workflow (how we use it).</li>
+      <li>I think that model still applies. And probably I'll use it afterwards. A few times.</li>
+      <li>it works as a disclaimer. Nobody knows nothing excludes me too.</li>
+      <li>that would be the opening of the next section. That would be the critical stance. To have critical stance.</li>
+    </ul>
+  </aside>
+</section>
+
+<!-- 2. full agentic (the slop relay) -->
+<section class="slide cover c-agentic" data-sec="agentic">
+  <h1>full agentic</h1>
+  <aside class="notes">
+    <ul>
+      <li>slop relay</li>
+      <li>what to review? does it still make sense to check the code?</li>
+      <li>in a team, does it make sense to tell a peer to check your code?</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide chat off">
+  <div class="ch">
+    <div class="ch-top"><span class="ch-dot"></span><span class="ch-dot"></span><span class="ch-dot"></span><span class="ch-title">PM — new chat</span></div>
+    <div class="ch-log">
+      <div class="ch-msg"><span class="ch-av">P</span><div class="ch-bubble">hello Clau, write ticket.</div></div>
+      <div class="ch-msg"><span class="ch-av">P</span><div class="ch-bubble">please</div></div>
+      <div class="ch-typing"><span></span><span></span><span></span></div>
+    </div>
+    <div class="ch-input"><span>Reply…</span><span class="ch-send">↑</span></div>
+  </div>
+</section>
+
+<section class="slide scroll ticket off" id="ord-0">
+  <div class="tk">
+    <div class="tk-top"><a href="#">Projects</a> / <a href="#">Orders</a> / <span class="tk-key"><span class="tk-epic-ico">⚡</span><a href="#">ORD-0</a></span></div>
+    <h1>[EPIC] Multi-region active-active replication for the Orders service</h1>
+    <div class="tk-actions"><span class="tk-btn">📎 Attach</span><span class="tk-btn">⊞ Add child issue</span><span class="tk-btn">🔗 Link issue</span><span class="tk-btn">···</span></div>
+    <div class="tk-body">
+      <div class="tk-main">
+        <p class="tk-label-desc">Description</p>
+
+        <h2>1. Background &amp; motivation</h2>
+        <ul>
+          <li><b>Reliability:</b> All of Orders runs in us-east-1 on a single Postgres 15 primary with 2 read replicas. During INC-2291, a 3h12m regional outage, checkout was completely down, costing about $1.2M in GMV and roughly 4,800 support tickets.</li>
+          <li><b>Latency:</b> EU users make up 38% of traffic. Their p95 checkout latency is 920 ms against 210 ms for US users, and about 70% of that gap is cross-Atlantic round trips.</li>
+          <li><b>Compliance:</b> Under the new EU contracts (LEGAL-88), PII for EU customers must be stored and processed in the EU from <b>Q3</b> onward. Missing that deadline puts 3 enterprise renewals worth about $4M ARR at risk.</li>
+          <li><b>Scale:</b> The current primary peaks at 68% CPU, and write volume is growing 9% month over month. Vertical scaling runs out in about 2 quarters.</li>
+        </ul>
+
+        <h2>2. Goals</h2>
+        <table>
+          <tr><th>#</th><th>Goal</th><th>Target</th></tr>
+          <tr><td>G1</td><td>Survive full loss of a region</td><td>RPO ≤ 5s, RTO ≤ 60s</td></tr>
+          <tr><td>G2</td><td>EU checkout latency</td><td>p95 &lt; 300 ms</td></tr>
+          <tr><td>G3</td><td>Data residency</td><td>0 EU PII persisted outside eu-west-1</td></tr>
+          <tr><td>G4</td><td>Payment correctness</td><td>0 double charges and 0 lost orders, including during failover</td></tr>
+          <tr><td>G5</td><td>Headroom</td><td>Each region carries 100% of global load at 1.5× current peak</td></tr>
+        </table>
+
+        <h2>3. Non-goals</h2>
+        <ul>
+          <li>Multi-region search, recommendations or the analytics warehouse (tracked in a separate epic)</li>
+          <li>A third region (the design must allow N regions, but only 2 are built)</li>
+          <li>Changes to how the mobile app talks to the API, beyond honoring redirects</li>
+          <li>Moving off Postgres</li>
+        </ul>
+
+        <h2>4. Current architecture</h2>
+<pre>Client → CloudFront → ALB (us-east-1) → orders-api (EKS, 24 pods)
+                                     ↘ billing-svc → Stripe
+orders-api → Postgres primary (r6g.4xl) → 2 read replicas
+orders-api → Redis (sessions, cart) → SQS (order events) → fulfillment</pre>
+        <p>Known pain points:</p>
+        <ul>
+          <li><code>orders.id</code> is a <code>BIGSERIAL</code></li>
+          <li>The cart lives only in Redis</li>
+          <li>Billing retries rely on the payment_intent ID and no client-supplied idempotency key, so a duplicate charge can happen</li>
+        </ul>
+
+        <h2>5. Proposed architecture</h2>
+<pre>Client → Global LB (geo + affinity) ─┬─ us-east-1: gateway → orders-api → PG (US shard)
+                                     └─ eu-west-1: gateway → orders-api → PG (EU shard)
+          PG ⇄ Debezium → Kafka (regional) ⇄ MirrorMaker2 ⇄ Kafka (other region)
+          Outbox → billing-svc (regional) → Stripe (idempotent)
+          Failover controller: 3 observers (use1, euw1, usw2 tiebreaker)</pre>
+
+        <h3>5.1 Data partitioning</h3>
+        <ul>
+          <li>Add <code>customers.home_region ENUM('us','eu')</code>, which is immutable except through the region-migration flow (§5.6).</li>
+          <li>Every order-scoped table (<code>orders</code>, <code>order_items</code>, <code>payments</code>, <code>shipments</code>, <code>addresses</code>) is homed by customer.</li>
+          <li>EU PII never leaves the EU. The US region only receives a <b>redacted projection</b>: order ID, status, totals and a hashed customer reference, used for global ops dashboards.</li>
+        </ul>
+
+        <h3>5.2 Identifiers</h3>
+        <ul>
+          <li>IDs become ULIDs with a region prefix: <code>us_01HF…</code> / <code>eu_01HF…</code>.</li>
+          <li>During transition, the existing <code>BIGSERIAL</code> stays as <code>legacy_id</code>, and the public API accepts either format for 2 releases.</li>
+          <li>ID generation needs no cross-region coordination.</li>
+        </ul>
+
+        <h3>5.3 Replication &amp; conflict resolution</h3>
+        <ul>
+          <li>Each region is the authoritative writer for its own customers.</li>
+          <li>Data flows Postgres → Debezium CDC → regional Kafka, and MirrorMaker 2 copies it to the other region, where it lands as read-only replicas or the redacted projection.</li>
+          <li>A write for a foreign-homed customer during normal operation is routed to the home region; it is never written locally.</li>
+          <li>When the home region is down, the surviving region may accept writes under a <b>failover lease</b> (§5.5). Those writes are tagged with a fencing epoch and reconciled when the home region comes back:
+            <ul>
+              <li><code>order.status</code> uses a state-machine merge: the furthest-forward legal state wins, so <code>cancelled</code> beats <code>paid</code> only if a refund was issued</li>
+              <li>Scalar fields use last-writer-wins on a hybrid logical clock (HLC)</li>
+              <li>Line items use an add-wins observed-remove set (OR-Set)</li>
+            </ul>
+          </li>
+          <li>Anything that can't be merged automatically goes to <code>conflict_queue</code> for manual review in an admin UI.</li>
+        </ul>
+
+        <h3>5.4 Payments &amp; idempotency</h3>
+        <ul>
+          <li>The client generates an <code>Idempotency-Key</code> per checkout attempt; the server falls back to a hash of cart + customer.</li>
+          <li>Keys are stored in <code>idempotency_keys</code> (24h TTL) and replicated synchronously to the other region <b>for payments only</b>, using a lightweight quorum write.</li>
+          <li>Billing uses the <b>transactional outbox</b>: <code>orders</code> and <code>outbox</code> are written in one transaction, and a relay publishes to billing.</li>
+          <li>Billing consumers deduplicate on <code>(idempotency_key, attempt)</code>, and Stripe calls pass the same key.</li>
+          <li><b>Reconciler</b> runs every 15 min and compares Stripe charges ↔ <code>payments</code> ↔ <code>orders</code>:
+            <ul>
+              <li>Drift above $0 pages Payments on-call</li>
+              <li>Auto-refund is allowed only for duplicates under $500 that have the same key and the same amount</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h3>5.5 Failover</h3>
+        <ul>
+          <li>The failover controller is a small Go service backed by etcd, with observers in use1, euw1 and usw2.</li>
+          <li>Deciding that a region is down needs <b>2 of 3</b> observers to agree for 20s, and the region must fail its synthetic checkout probe.</li>
+          <li>The controller then:
+            <ol>
+              <li>Increments the epoch</li>
+              <li>Grants a write lease to the surviving region</li>
+              <li>Flips the global LB weights</li>
+            </ol>
+          </li>
+          <li>Every DB write includes <code>epoch</code>, and a trigger rejects any write with a stale epoch. That fencing stops a deposed primary from writing.</li>
+          <li>Failback is <b>manual only</b>: an operator runs <code>failover-ctl failback --region eu</code> once the region has caught up and its lag is below 1s.</li>
+        </ul>
+
+        <h3>5.6 Routing</h3>
+        <ul>
+          <li>The global LB does latency-based geo-routing.</li>
+          <li>After login, the JWT carries <code>home_region</code>, and the gateway proxies requests internally to the home region. Clients never see redirects except on the very first login.</li>
+          <li>Anonymous carts are created in the nearest region and moved to the home region at login.</li>
+          <li>A customer moving countries triggers an async <b>region-migration job</b>:
+            <ol>
+              <li>Freeze writes for that customer (&lt; 5s)</li>
+              <li>Copy the data</li>
+              <li>Flip <code>home_region</code></li>
+              <li>Unfreeze</li>
+              <li>Purge the source after 30 days, per legal</li>
+            </ol>
+          </li>
+        </ul>
+
+        <h3>5.7 Caching &amp; sessions</h3>
+        <ul>
+          <li>Redis is regional. Sessions are stateless JWTs, and carts persist in Postgres with Redis as a write-through cache.</li>
+          <li>Cache invalidation is driven by CDC events.</li>
+        </ul>
+
+        <h2>6. Migration plan</h2>
+        <table>
+          <tr><th>Phase</th><th>Description</th><th>Exit criteria</th><th>Rollback</th></tr>
+          <tr><td>0</td><td>ADRs, threat model, legal sign-off</td><td>ADRs approved</td><td>n/a</td></tr>
+          <tr><td>1</td><td>ULID columns, outbox, idempotency keys (single region)</td><td>Running in prod for 2 weeks, 0 dup charges</td><td>Feature flag off</td></tr>
+          <tr><td>2</td><td>Stand up eu-west-1 infra, start CDC/Kafka replication</td><td>Lag &lt; 1s p99 for 7 days</td><td>Tear down</td></tr>
+          <tr><td>3</td><td>Backfill <code>home_region</code> for 14M customers (billing country → shipping country → IP history → default US)</td><td>99.9% classified; leftovers reviewed manually</td><td>Column ignored</td></tr>
+          <tr><td>4</td><td>Dual-write EU customers to both regions behind a flag; shadow reads with diff logging</td><td>Diff rate &lt; 0.001% for 7 days</td><td>Flag off</td></tr>
+          <tr><td>5</td><td>Cut over EU customers in 1% → 10% → 50% → 100% steps</td><td>SLOs met at each step for 48h</td><td>Shift LB weight back</td></tr>
+          <tr><td>6</td><td>Purge EU PII from us-east-1, including backups and logs</td><td>DPO audit passes</td><td>n/a (one-way, needs sign-off)</td></tr>
+          <tr><td>7</td><td>Enable automatic failover</td><td>Game day passed</td><td>Controller in manual mode</td></tr>
+        </table>
+
+        <h2>7. Observability</h2>
+        <ul>
+          <li><b>Metrics:</b>
+            <ul>
+              <li><code>replication_lag_seconds{src,dst}</code></li>
+              <li><code>conflict_queue_depth</code></li>
+              <li><code>failover_epoch</code></li>
+              <li><code>idempotency_hits_total</code></li>
+              <li><code>reconciler_drift_usd</code></li>
+              <li><code>cross_region_proxy_requests_total</code></li>
+            </ul>
+          </li>
+          <li><b>Alerts:</b>
+            <ul>
+              <li>Replication lag above 2s warns; above 5s for 1 min pages</li>
+              <li>Any reconciler drift pages</li>
+              <li>Conflict queue above 50 warns</li>
+            </ul>
+          </li>
+          <li><b>Dashboards:</b>
+            <ul>
+              <li>"Multi-region overview" (Grafana)</li>
+              <li>Per-region checkout funnel</li>
+            </ul>
+          </li>
+          <li><b>Tracing:</b> The OTel span attribute <code>region.home</code> / <code>region.served</code> makes misrouted traffic visible.</li>
+          <li><b>Logs:</b> EU logs ship to the EU logging cluster only, with a PII scrubber in the log pipeline.</li>
+        </ul>
+
+        <h2>8. Security &amp; compliance</h2>
+        <ul>
+          <li>KMS keys are per region, and EU keys are never usable from the US.</li>
+          <li>IAM enforces that US workloads cannot read EU buckets or databases, and this is checked by a CI policy test.</li>
+          <li>EU backups stay in eu-west-1, with cross-AZ redundancy only.</li>
+          <li>The DPIA must be updated, and the Records of Processing Activities (RoPA) entry amended.</li>
+          <li>The threat model must cover:
+            <ul>
+              <li>Region spoofing through a forged JWT claim</li>
+              <li>Replay of idempotency keys</li>
+              <li>A compromised MirrorMaker cluster</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>9. Testing strategy</h2>
+        <ul>
+          <li><b>Unit and property tests</b> for the merge functions (state machine, HLC, OR-Set), using generated concurrent histories.</li>
+          <li><b>Jepsen-style tests</b> in staging: partitions, clock skew of ±500 ms, and killing the primary in the middle of a transaction.</li>
+          <li><b>Chaos (Gremlin/Litmus)</b>, run weekly in staging and quarterly in prod:
+            <ul>
+              <li>Blackhole an entire region</li>
+              <li>Kill Kafka brokers</li>
+              <li>Pause MirrorMaker</li>
+            </ul>
+          </li>
+          <li><b>Load tests (k6)</b> at 2k RPS sustained and 5k RPS burst, run in each region alone.</li>
+          <li><b>Payment tests</b> run in Stripe test mode with duplicate requests, retry storms and webhook replays injected.</li>
+          <li><b>Residency audit script</b> scans US datastores, logs and backups for EU customer identifiers.</li>
+        </ul>
+
+        <h2>10. Acceptance criteria</h2>
+        <ul class="tk-check">
+          <li>Blackholing eu-west-1 under 2k RPS loses <b>0 orders</b>, produces <b>0 duplicate charges</b>, and restores checkout in <b>≤ 60s</b></li>
+          <li>Same result for us-east-1</li>
+          <li>EU p95 checkout latency <b>&lt; 300 ms</b> over 7 days</li>
+          <li>Residency audit finds <b>0</b> EU PII outside eu-west-1, covering DBs, logs, backups and Kafka</li>
+          <li>Replication lag p99 <b>&lt; 1s</b>, with dashboards and alerts live</li>
+          <li>Reconciler shows <b>$0 drift</b> for 14 consecutive days after cutover</li>
+          <li>Conflict queue sits at 0 in steady state; the admin UI resolves every conflict type</li>
+          <li>Runbooks reviewed by SRE; game day passed with an on-call engineer who wasn't on the project</li>
+          <li>DPO sign-off and updated DPIA on file</li>
+          <li>Old <code>BIGSERIAL</code> endpoints deprecated, with no traffic for 2 weeks</li>
+        </ul>
+
+        <h2>11. Dependencies</h2>
+        <ul>
+          <li><b>Infra:</b> EKS cluster, VPC peering / Transit Gateway, and EU account setup (<span class="tk-link">INFRA-412</span>)</li>
+          <li><b>Kafka:</b> self-hosted or MSK, decision in ADR-3</li>
+          <li><b>Stripe:</b> idempotency is already supported, but EU entity routing needs to be confirmed with Finance</li>
+          <li><b>Mobile:</b> app release that sends <code>Idempotency-Key</code> (iOS and Android, ~3-week release cycle)</li>
+          <li><b>Legal:</b> ruling on whether hashed emails count as PII</li>
+        </ul>
+
+        <h2>12. Risks</h2>
+        <table>
+          <tr><th>Risk</th><th>Likelihood</th><th>Impact</th><th>Mitigation</th></tr>
+          <tr><td>Split-brain double writes</td><td>Med</td><td>High</td><td>Quorum observers, fencing epochs, DB trigger</td></tr>
+          <tr><td>Kafka ops burden</td><td>High</td><td>Med</td><td>Use MSK; runbooks; dedicated on-call rotation</td></tr>
+          <tr><td>Backfill misclassifies residency</td><td>Med</td><td>High</td><td>Conservative default to EU when signals conflict; manual review queue</td></tr>
+          <tr><td>Latency for travelers</td><td>Med</td><td>Low</td><td>Proxy, plus opt-in region migration</td></tr>
+          <tr><td>Duplicate charges during cutover</td><td>Low</td><td>High</td><td>Idempotency shipped first (Phase 1), reconciler, auto-refund</td></tr>
+          <tr><td>Infra costs ~1.9×</td><td>High</td><td>Med</td><td>Right-size the EU footprint; reserved instances; Finance approved budget</td></tr>
+          <tr><td>Team ramp-up on CRDT/HLC</td><td>Med</td><td>Med</td><td>Spike + ADR + pairing; limit CRDTs to 3 fields</td></tr>
+        </table>
+
+        <h2>13. Cost estimate</h2>
+        <table>
+          <tr><th>Item</th><th>Monthly</th></tr>
+          <tr><td>EU EKS + RDS (r6g.4xl + 2 replicas)</td><td>~$18k</td></tr>
+          <tr><td>MSK (2 clusters, 3 brokers each)</td><td>~$7k</td></tr>
+          <tr><td>Cross-region data transfer</td><td>~$3k</td></tr>
+          <tr><td>Observability (extra metrics/logs)</td><td>~$2k</td></tr>
+          <tr><td><b>Total incremental</b></td><td><b>~$30k/mo</b> (compared with $1.2M lost per major outage)</td></tr>
+        </table>
+
+        <h2>14. Rollout &amp; communication</h2>
+        <ul>
+          <li>Weekly status in #proj-multiregion, and an exec summary every 2 weeks.</li>
+          <li>Support gets a macro and FAQ before Phase 5 covering the "your data is now stored in the EU" message.</li>
+          <li>Status-page template prepared for failover events.</li>
+          <li>Enterprise customers covered by LEGAL-88 get written confirmation after Phase 6.</li>
+        </ul>
+
+        <h2>15. Open questions</h2>
+        <ol>
+          <li>Should a failed-over region accept <b>new customer signups</b> for the other region, or queue them?</li>
+          <li>Should idempotency keys replicate synchronously for payments only, or for every mutating call?</li>
+          <li>Does Finance need separate Stripe accounts per legal entity, US Inc vs EU BV?</li>
+          <li>Is a 30-day purge window enough, or does legal require immediate deletion?</li>
+          <li>Kafka: is MSK Serverless enough at our throughput?</li>
+        </ol>
+
+        <h2>16. Child issues</h2>
+        <div class="tk-progress"></div>
+        <div class="tk-children">
+          <div class="tk-child"><span class="tk-sub-ico">✓</span><span class="k">ORD-1</span><span>ADR-1: Data partitioning &amp; residency</span><span class="e">3d</span><span class="s">TO DO</span></div>
+          <div class="tk-child"><span class="tk-sub-ico">✓</span><span class="k">ORD-2</span><span>ADR-2: Conflict resolution (HLC, state machine, OR-Set)</span><span class="e">5d</span><span class="s">TO DO</span></div>
+          <div class="tk-child"><span class="tk-sub-ico">✓</span><span class="k">ORD-3</span><span>ADR-3: Kafka hosting &amp; replication topology</span><span class="e">3d</span><span class="s">TO DO</span></div>
+          <div class="tk-child"><span class="tk-sub-ico">✓</span><span class="k">ORD-4</span><span>ULID columns, dual IDs in API</span><span class="e">8d</span><span class="s">TO DO</span></div>
+          <div class="tk-child"><span class="tk-sub-ico">✓</span><span class="k">ORD-5</span><span>Idempotency-Key middleware + storage</span><span class="e">5d</span><span class="s">TO DO</span></div>
+          <div class="tk-child"><span class="tk-sub-ico">✓</span><span class="k">ORD-6</span><span>Transactional outbox + relay</span><span class="e">8d</span><span class="s">TO DO</span></div>
+          <div class="tk-child"><span class="tk-sub-ico">✓</span><span class="k">ORD-7</span><span>Payments reconciler + alerting</span><span class="e">5d</span><span class="s">TO DO</span></div>
+          <div class="tk-child"><span class="tk-sub-ico">✓</span><span class="k">ORD-8</span><span>eu-west-1 infra (Terraform)</span><span class="e">10d</span><span class="s">TO DO</span></div>
+          <div class="tk-child"><span class="tk-sub-ico">✓</span><span class="k">ORD-9</span><span>Debezium + MirrorMaker 2 pipeline</span><span class="e">10d</span><span class="s">TO DO</span></div>
+          <div class="tk-child"><span class="tk-sub-ico">✓</span><span class="k">ORD-10</span><span><code>home_region</code> backfill job + review queue</span><span class="e">8d</span><span class="s">TO DO</span></div>
+          <div class="tk-child"><span class="tk-sub-ico">✓</span><span class="k">ORD-11</span><span>Gateway region-affinity proxy</span><span class="e">8d</span><span class="s">TO DO</span></div>
+          <div class="tk-child"><span class="tk-sub-ico">✓</span><span class="k">ORD-12</span><span>Failover controller + fencing triggers</span><span class="e">13d</span><span class="s">TO DO</span></div>
+          <div class="tk-child"><span class="tk-sub-ico">✓</span><span class="k">ORD-13</span><span>Merge functions + property tests</span><span class="e">8d</span><span class="s">TO DO</span></div>
+          <div class="tk-child"><span class="tk-sub-ico">✓</span><span class="k">ORD-14</span><span>Conflict admin UI</span><span class="e">5d</span><span class="s">TO DO</span></div>
+          <div class="tk-child"><span class="tk-sub-ico">✓</span><span class="k">ORD-15</span><span>Region-migration job</span><span class="e">8d</span><span class="s">TO DO</span></div>
+          <div class="tk-child"><span class="tk-sub-ico">✓</span><span class="k">ORD-16</span><span>Observability: metrics, dashboards, alerts</span><span class="e">5d</span><span class="s">TO DO</span></div>
+          <div class="tk-child"><span class="tk-sub-ico">✓</span><span class="k">ORD-17</span><span>Chaos + Jepsen suite</span><span class="e">10d</span><span class="s">TO DO</span></div>
+          <div class="tk-child"><span class="tk-sub-ico">✓</span><span class="k">ORD-18</span><span>Residency audit tooling + PII log scrubber</span><span class="e">5d</span><span class="s">TO DO</span></div>
+          <div class="tk-child"><span class="tk-sub-ico">✓</span><span class="k">ORD-19</span><span>Runbooks + game day</span><span class="e">3d</span><span class="s">TO DO</span></div>
+          <div class="tk-child"><span class="tk-sub-ico">✓</span><span class="k">ORD-20</span><span>US PII purge (Phase 6)</span><span class="e">3d</span><span class="s">TO DO</span></div>
+        </div>
+
+        <h2>17. Definition of done</h2>
+        <ul>
+          <li>Every sub-ticket is closed and all acceptance criteria are checked</li>
+          <li>ADRs merged, runbooks in the wiki, on-call trained</li>
+          <li>Postmortem-style retrospective held, with learnings documented</li>
+        </ul>
+      </div>
+
+      <div class="tk-side">
+        <span class="tk-status">To Do ▾</span>
+        <div class="tk-panel">
+          <div class="tk-panel-h">Details</div>
+          <div class="tk-row"><span>Type</span><span><span class="tk-epic-ico">⚡</span> Epic</span></div>
+          <div class="tk-row"><span>Assignee</span><span><span class="tk-avatar">?</span>TBD (Tech Lead, Platform)</span></div>
+          <div class="tk-row"><span>Priority</span><span><span class="tk-prio">⇈</span>P1 – High</span></div>
+          <div class="tk-row"><span>Estimate</span><span>6–8 sprints (~14 weeks)</span></div>
+          <div class="tk-row"><span>Components</span><span><span class="tk-comp">orders-api</span><span class="tk-comp">billing</span><span class="tk-comp">gateway</span><span class="tk-comp">infra</span><span class="tk-comp">data-platform</span></span></div>
+          <div class="tk-row"><span>Labels</span><span><span class="tk-lbl">reliability</span><span class="tk-lbl">gdpr</span><span class="tk-lbl">multi-region</span><span class="tk-lbl">q1-okr</span></span></div>
+          <div class="tk-row"><span>Stakeholders</span><span>SRE, Payments, Legal/DPO, Customer Support, Finance</span></div>
+          <div class="tk-row"><span>Linked issues</span><span><span class="tk-link">INC-2291</span> (us-east-1 outage postmortem)<br><span class="tk-link">LEGAL-88</span> (EU residency)</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide chat off">
+  <div class="ch">
+    <div class="ch-top"><span class="ch-dot"></span><span class="ch-dot"></span><span class="ch-dot"></span><span class="ch-title">Dev — new chat</span></div>
+    <div class="ch-log">
+      <div class="ch-msg"><span class="ch-av">D</span><div class="ch-bubble">ticket ORD-0 from jira. implement.</div></div>
+      <div class="ch-msg"><span class="ch-av">D</span><div class="ch-bubble">make no mistakes</div></div>
+      <div class="ch-typing"><span></span><span></span><span></span></div>
+    </div>
+    <div class="ch-input"><span>Reply…</span><span class="ch-send">↑</span></div>
+  </div>
+</section>
+
+<section class="slide chat off">
+  <div class="ch">
+    <div class="ch-top"><span class="ch-dot"></span><span class="ch-dot"></span><span class="ch-dot"></span><span class="ch-title">QA engineer — new chat</span></div>
+    <div class="ch-log">
+      <div class="ch-msg"><span class="ch-av">Q</span><div class="ch-bubble">ORD-0. Do QA</div></div>
+      <div class="ch-typing"><span></span><span></span><span></span></div>
+    </div>
+    <div class="ch-input"><span>Reply…</span><span class="ch-send">↑</span></div>
+  </div>
+</section>
+
+<section class="slide scroll qa off" id="qa-report">
+  <div class="qa-doc">
+    <img class="qa-stamp" src="material/passed-stamp.png" alt="PASSED stamp">
+    <div class="qa-h">
+      <div><div class="qa-k">QA Report · ORD-0</div><h1>Multi-region active-active replication for the Orders service</h1></div>
+    </div>
+    <div class="qa-sum">
+      <div><b>173</b><span>findings</span></div>
+      <div><b>0</b><span>critical</span></div>
+      <div><b>0</b><span>high</span></div>
+      <div><b>2</b><span>medium</span></div>
+      <div><b>171</b><span>low / info</span></div>
+      <div><b>100%</b><span>tests passing</span></div>
+    </div>
+    <table>
+      <tr><th>ID</th><th>Severity</th><th>Where</th><th>Finding</th><th>Status</th></tr>
+        <tr><td>QA-1</td><td><span class="qa-sev qa-low">Low</span></td><td><code>README.md:412</code></td><td>Trailing whitespace at end of line.</td><td>✓ Verified</td></tr>
+        <tr><td>QA-2</td><td><span class="qa-sev qa-low">Low</span></td><td><code>orders_api/failover.go:88</code></td><td>Variable name <code>ctx</code> could be more descriptive (suggest <code>contextOfTheCurrentRequest</code>).</td><td>✓ Verified</td></tr>
+        <tr><td>QA-3</td><td><span class="qa-sev qa-info">Info</span></td><td><code>docs/adr-2.md</code></td><td>The word “failover” is spelled “fail-over” 3 times and “failover” 41 times.</td><td>✓ Verified</td></tr>
+        <tr><td>QA-4</td><td><span class="qa-sev qa-low">Low</span></td><td><code>spec/idempotency_spec.rb:17</code></td><td>Test passes. Consider verifying that it passes.</td><td>✓ Verified</td></tr>
+        <tr><td>QA-5</td><td><span class="qa-sev qa-medium">Medium</span></td><td><code>admin/conflicts.css:204</code></td><td>Hover color <code>#0052cc</code> differs from design token <code>#0052CC</code> (case).</td><td>✓ Verified</td></tr>
+        <tr><td>QA-6</td><td><span class="qa-sev qa-info">Info</span></td><td><code>CHANGELOG.md</code></td><td>Entry for ORD-0 does not end with a period.</td><td>✓ Verified</td></tr>
+        <tr><td>QA-7</td><td><span class="qa-sev qa-low">Low</span></td><td><code>migrations/20261125_add_ulid.rb</code></td><td>Migration timestamp is in UTC; consider local time for readability.</td><td>✓ Verified</td></tr>
+        <tr><td>QA-8</td><td><span class="qa-sev qa-info">Info</span></td><td><code>outbox/relay.rb:3</code></td><td>Comment explains what the code does; consider a comment explaining the comment.</td><td>✓ Verified</td></tr>
+        <tr><td>QA-9</td><td><span class="qa-sev qa-low">Low</span></td><td><code>Gemfile.lock</code></td><td>Lockfile has 2,341 lines; consider fewer.</td><td>✓ Verified</td></tr>
+        <tr><td>QA-10</td><td><span class="qa-sev qa-medium">Medium</span></td><td><code>app/views/checkout/_button.html.erb</code></td><td>“Place order” button is 1px narrower on Safari 17.4 at 1,337px viewport.</td><td>✓ Verified</td></tr>
+        <tr><td>QA-11</td><td><span class="qa-sev qa-info">Info</span></td><td><code>config/regions.yml</code></td><td>Keys are not in alphabetical order (<code>us</code> before <code>eu</code>).</td><td>✓ Verified</td></tr>
+        <tr><td>QA-12</td><td><span class="qa-sev qa-low">Low</span></td><td><code>commit 47/89</code></td><td>Commit message uses past tense (“Added”) instead of imperative (“Add”).</td><td>✓ Verified</td></tr>
+        <tr><td>QA-13</td><td><span class="qa-sev qa-info">Info</span></td><td><code>dashboards/multi-region.json</code></td><td>Panel title “Multi-region overview” could use title case.</td><td>✓ Verified</td></tr>
+        <tr><td>QA-14</td><td><span class="qa-sev qa-low">Low</span></td><td><code>failover-ctl --help</code></td><td>Help text is 81 characters wide.</td><td>✓ Verified</td></tr>
+        <tr><td>QA-15</td><td><span class="qa-sev qa-info">Info</span></td><td><code>PR description</code></td><td>Uses “etc, etc, etc...” (3 etc), style guide recommends at most 2.</td><td>✓ Verified</td></tr>
+    </table>
+    <p class="qa-more">… 158 more findings</p>
+  </div>
+</section>
+
+<section class="slide cover off">
+  <h1>RELEASE!</h1>
+</section>
+
+<section class="slide sdlc">
+  <svg viewBox="0 0 1600 900" style="width:94vw;max-height:88vh" role="img" aria-label="Traditional SDLC cycle" font-family="system-ui, sans-serif" fill="currentColor">
+    <defs><marker id="ah15" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+    <text x="800" y="488" text-anchor="middle" font-size="52" font-weight="800">Traditional SDLC</text>
+    <path d="M986,171 A520,320 0 0 1 1127,221" fill="none" stroke="currentColor" stroke-width="5" marker-end="url(#ah15)"/>
+    <path d="M1314,420 A520,320 0 0 1 1314,520" fill="none" stroke="currentColor" stroke-width="5" marker-end="url(#ah15)"/>
+    <path d="M1127,719 A520,320 0 0 1 986,769" fill="none" stroke="currentColor" stroke-width="5" marker-end="url(#ah15)"/>
+    <path d="M614,769 A520,320 0 0 1 473,719" fill="none" stroke="currentColor" stroke-width="5" marker-end="url(#ah15)"/>
+    <path d="M286,520 A520,320 0 0 1 286,420" fill="none" stroke="currentColor" stroke-width="5" marker-end="url(#ah15)"/>
+    <path d="M473,221 A520,320 0 0 1 614,171" fill="none" stroke="currentColor" stroke-width="5" marker-end="url(#ah15)"/>
+    <rect x="610" y="75" width="380" height="150" rx="14" fill="#fff" stroke="currentColor" stroke-width="3"/><text x="800" y="122" text-anchor="middle" font-size="30" font-weight="700">PM</text><text x="800" y="160" text-anchor="middle" font-size="23">writes requirement</text><text x="800" y="200" text-anchor="middle" font-size="27" font-weight="700">⇒ Ticket</text>
+    <rect x="1060" y="235" width="380" height="150" rx="14" fill="#fff" stroke="currentColor" stroke-width="3"/><text x="1250" y="282" text-anchor="middle" font-size="30" font-weight="700">Dev</text><text x="1250" y="320" text-anchor="middle" font-size="23">implements features</text><text x="1250" y="360" text-anchor="middle" font-size="27" font-weight="700">⇒ PR</text>
+    <rect x="1060" y="555" width="380" height="150" rx="14" fill="#fff" stroke="currentColor" stroke-width="3"/><text x="1250" y="602" text-anchor="middle" font-size="30" font-weight="700">Dev (other)</text><text x="1250" y="640" text-anchor="middle" font-size="23">Review PR</text><text x="1250" y="680" text-anchor="middle" font-size="27" font-weight="700">⇒ Comments</text>
+    <rect x="610" y="715" width="380" height="150" rx="14" fill="#fff" stroke="currentColor" stroke-width="3"/><text x="800" y="762" text-anchor="middle" font-size="30" font-weight="700">QA Analyst</text><text x="800" y="800" text-anchor="middle" font-size="23">Verify PR</text><text x="800" y="840" text-anchor="middle" font-size="27" font-weight="700">⇒ QA Report</text>
+    <rect x="160" y="555" width="380" height="150" rx="14" fill="#fff" stroke="currentColor" stroke-width="3"/><text x="350" y="602" text-anchor="middle" font-size="30" font-weight="700">Dev/Ops</text><text x="350" y="640" text-anchor="middle" font-size="23">Deploy</text><text x="350" y="680" text-anchor="middle" font-size="27" font-weight="700">⇒ App</text>
+    <rect x="160" y="235" width="380" height="150" rx="14" fill="#fff" stroke="currentColor" stroke-width="3"/><text x="350" y="282" text-anchor="middle" font-size="30" font-weight="700">Dev/Ops</text><text x="350" y="320" text-anchor="middle" font-size="23">Monitoring</text><text x="350" y="360" text-anchor="middle" font-size="27" font-weight="700">⇒ Bugs</text>
+  </svg>
+  <aside class="notes">
+    <ul>
+      <li>Para llegar a un flujo full agentic, puede suceder de dos maneras.</li>
+      <li>O hay una bajada de línea de la dirección de la compañía, de que todo el mundo empiece a usar agentes en su día a día para todo.</li>
+      <li>O lo más frecuente es que alguna persona en este flujo decida empezar a usar agentes por sí solo.</li>
+      <li>El resultado final es el mismo.</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide steps sdlc">
+  <svg viewBox="0 0 1600 900" style="width:94vw;max-height:88vh" role="img" aria-label="SDLC turning full agentic, one step at a time" font-family="system-ui, sans-serif" fill="currentColor">
+    <defs><marker id="ah-seq" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+    <path d="M986,171 A520,320 0 0 1 1127,221" fill="none" stroke="currentColor" stroke-width="5" marker-end="url(#ah-seq)"/>
+    <path d="M1314,420 A520,320 0 0 1 1314,520" fill="none" stroke="currentColor" stroke-width="5" marker-end="url(#ah-seq)"/>
+    <path d="M1127,719 A520,320 0 0 1 986,769" fill="none" stroke="currentColor" stroke-width="5" marker-end="url(#ah-seq)"/>
+    <path d="M614,769 A520,320 0 0 1 473,719" fill="none" stroke="currentColor" stroke-width="5" marker-end="url(#ah-seq)"/>
+    <path d="M286,520 A520,320 0 0 1 286,420" fill="none" stroke="currentColor" stroke-width="5" marker-end="url(#ah-seq)"/>
+    <path d="M473,221 A520,320 0 0 1 614,171" fill="none" stroke="currentColor" stroke-width="5" marker-end="url(#ah-seq)"/>
+    <g class="unstep" data-s="0"><rect x="610" y="75" width="380" height="150" rx="14" fill="#fff" stroke="currentColor" stroke-width="3"/><text x="800" y="122" text-anchor="middle" font-size="30" font-weight="700">PM</text><text x="800" y="160" text-anchor="middle" font-size="23">writes requirement</text><text x="800" y="200" text-anchor="middle" font-size="27" font-weight="700">⇒ Ticket</text></g>
+    <g class="step" data-s="0"><a href="#ord-0" style="cursor:pointer"><rect x="610" y="75" width="380" height="150" rx="14" fill="#fff" stroke="currentColor" stroke-width="3"/><text x="800" y="122" text-anchor="middle" font-size="30" font-weight="700">PM</text><text x="800" y="160" text-anchor="middle" font-size="21"><tspan class="add" font-weight="700">Asks agent to</tspan> write requirement</text><text x="800" y="200" text-anchor="middle" font-size="27" font-weight="700">⇒ Ticket <tspan class="add" fill="#d1242f">(SLOP)</tspan></text></a></g>
+    <g class="unstep" data-s="1"><rect x="1060" y="235" width="380" height="150" rx="14" fill="#fff" stroke="currentColor" stroke-width="3"/><text x="1250" y="282" text-anchor="middle" font-size="30" font-weight="700">Dev</text><text x="1250" y="320" text-anchor="middle" font-size="23">implements features</text><text x="1250" y="360" text-anchor="middle" font-size="27" font-weight="700">⇒ PR</text></g>
+    <g class="step" data-s="1"><rect x="1060" y="235" width="380" height="150" rx="14" fill="#fff" stroke="currentColor" stroke-width="3"/><text x="1250" y="282" text-anchor="middle" font-size="30" font-weight="700">Dev</text><text x="1250" y="320" text-anchor="middle" font-size="21"><tspan class="add" font-weight="700">Asks agent to</tspan> implement features</text><text x="1250" y="360" text-anchor="middle" font-size="27" font-weight="700">⇒ PR <tspan class="add" fill="#d1242f">(SLOP)</tspan></text></g>
+    <g class="unstep" data-s="2"><rect x="1060" y="555" width="380" height="150" rx="14" fill="#fff" stroke="currentColor" stroke-width="3"/><text x="1250" y="602" text-anchor="middle" font-size="30" font-weight="700">Dev (other)</text><text x="1250" y="640" text-anchor="middle" font-size="23">Review PR</text><text x="1250" y="680" text-anchor="middle" font-size="27" font-weight="700">⇒ Comments</text></g>
+    <g class="step" data-s="2"><rect x="1060" y="555" width="380" height="150" rx="14" fill="#fff" stroke="currentColor" stroke-width="3"/><text x="1250" y="602" text-anchor="middle" font-size="30" font-weight="700">Dev (other)</text><text x="1250" y="640" text-anchor="middle" font-size="21"><tspan class="add" font-weight="700">Asks agent to</tspan> review PR</text><text x="1250" y="680" text-anchor="middle" font-size="27" font-weight="700">⇒ Comments <tspan class="add" fill="#d1242f">(SLOP)</tspan></text></g>
+    <g class="unstep" data-s="3"><rect x="610" y="715" width="380" height="150" rx="14" fill="#fff" stroke="currentColor" stroke-width="3"/><text x="800" y="762" text-anchor="middle" font-size="30" font-weight="700">QA Analyst</text><text x="800" y="800" text-anchor="middle" font-size="23">Verify PR</text><text x="800" y="840" text-anchor="middle" font-size="27" font-weight="700">⇒ QA Report</text></g>
+    <g class="step" data-s="3"><a href="#qa-report" style="cursor:pointer"><rect x="610" y="715" width="380" height="150" rx="14" fill="#fff" stroke="currentColor" stroke-width="3"/><text x="800" y="762" text-anchor="middle" font-size="30" font-weight="700">QA Analyst</text><text x="800" y="800" text-anchor="middle" font-size="21"><tspan class="add" font-weight="700">Asks agent to</tspan> verify PR</text><text x="800" y="840" text-anchor="middle" font-size="27" font-weight="700">⇒ QA Report <tspan class="add" fill="#d1242f">(SLOP)</tspan></text></a></g>
+    <g class="unstep" data-s="4"><rect x="160" y="555" width="380" height="150" rx="14" fill="#fff" stroke="currentColor" stroke-width="3"/><text x="350" y="602" text-anchor="middle" font-size="30" font-weight="700">Dev/Ops</text><text x="350" y="640" text-anchor="middle" font-size="23">Deploy</text><text x="350" y="680" text-anchor="middle" font-size="27" font-weight="700">⇒ App</text></g>
+    <g class="step" data-s="4"><rect x="160" y="555" width="380" height="150" rx="14" fill="#fff" stroke="currentColor" stroke-width="3"/><text x="350" y="602" text-anchor="middle" font-size="30" font-weight="700">Dev/Ops</text><text x="350" y="640" text-anchor="middle" font-size="21"><tspan class="add" font-weight="700">Asks agent to</tspan> deploy</text><text x="350" y="680" text-anchor="middle" font-size="27" font-weight="700">⇒ App <tspan class="add" fill="#d1242f">(Russian Roulette)</tspan></text></g>
+    <g class="unstep" data-s="5"><rect x="160" y="235" width="380" height="150" rx="14" fill="#fff" stroke="currentColor" stroke-width="3"/><text x="350" y="282" text-anchor="middle" font-size="30" font-weight="700">Dev/Ops</text><text x="350" y="320" text-anchor="middle" font-size="23">Monitoring</text><text x="350" y="360" text-anchor="middle" font-size="27" font-weight="700">⇒ Bugs</text></g>
+    <g class="step" data-s="5"><rect x="160" y="235" width="380" height="150" rx="14" fill="#fff" stroke="currentColor" stroke-width="3"/><text x="350" y="282" text-anchor="middle" font-size="30" font-weight="700">Dev/Ops</text><text x="350" y="320" text-anchor="middle" font-size="18.5"><tspan class="add" font-weight="700">Sets up autonomous Agent for</tspan> monitoring</text><text x="350" y="360" text-anchor="middle" font-size="27" font-weight="700">⇒ More Tickets <tspan class="add" fill="#d1242f">(SLOP)</tspan></text></g>
+  </svg>
+  <aside class="notes">
+    <ul>
+      <li>Para llegar a un flujo full agentic, puede suceder de dos maneras.</li>
+      <li>O hay una bajada de línea de la dirección de la compañía, de que todo el mundo empiece a usar agentes en su día a día para todo.</li>
+      <li>O lo más frecuente es que alguna persona en este flujo decida empezar a usar agentes por sí solo.</li>
+      <li>El resultado final es el mismo.</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide full">
+  <iframe src="proudly-full-agentic.html" title="Proudly Full Agentic Certification" style="width:100vw;height:100vh;border:0;display:block"></iframe>
+</section>
+
+<section class="slide quote bounce">
+  <span class="bw"><i>🥩</i><b>meat proxy</b></span>
+  <span class="bw"><i>🧟</i><b>slop zombi</b></span>
+  <span class="bw"><i>🧠</i><b>brain tissue</b></span>
+  <span class="bw"><i>🪤</i><b>brain switch-off trap</b></span>
+  <blockquote>“I feel that we as an industry, what we are trying to do is to run away from understanding. And that doesn't make no fucking sense to me....”
+    <cite>— Mario Zechner · <a href="https://www.youtube.com/watch?v=ZBTegd8DUZM&amp;t=2040s" target="_blank" rel="noopener">youtube.com/watch?v=ZBTegd8DUZM&amp;t=2040s</a> (34:00)</cite>
+  </blockquote>
+  <aside class="notes">
+    <ul>
+      <li>I feel that we as an industry, what we are trying to do is to run away from understanding. And that doesn't make no fucking sense to me.... because if I don't have to understand anything anymore, what use are you for? why do I need to pay you? I just prompt my factory I don't need to pay you. I'll fire you</li>
+      <li>https://www.youtube.com/watch?v=ZBTegd8DUZM&amp;t=2040s (34:00)</li>
+    </ul>
+    <p><b>The trap</b></p>
+    <ul>
+      <li>these machines are fantastic to produce prototypes. I don't think they are fantastic to produce good solutions. Not yet, at least. So feels like they do still need the guidance and the brain.</li>
+      <li>What we saw on our project is that they work like a trap because everything is so round, so enunciated like a closed truth that there's no place for argument or for criticizing.</li>
+      <li>it triggers a flip. It flips a switch in our brain. Like when you see that kind of discourse, you kind of like switch off that part of the brain. Like, hey, this is good. I'm not going to criticize it or review it or try to change it if it's good.</li>
+      <li>reviewing the criticizing is a lot of effort. So it's like the brain shuts down on purpose to save energy, which is what the brain does fantastically.</li>
+      <li>I think that's a huge problem. It's a trap. So we need to be aware of the trap. We need to be ultra conscious.</li>
+      <li>we need to do a mind switch, and be very suspicious. Like it's a little bit paranoid perhaps, but it's like working with someone you know it's gonna fuck up somewhere, so you have to find when where.</li>
+    </ul>
+  </aside>
+</section>
+
+<!-- 3. PR porn — the poteto saga -->
+<section class="slide cover c-prporn" data-sec="prporn">
+  <h1>PR Porn</h1>
+</section>
+
+<section class="slide pq">
+  <img src="material/poteto-11k-prs.png" alt="Lauren Tan, All Code Is Slop (Except Mine): grok bot team merged 11k PRs in oct. jun 809, jul 1,784, aug 4,203, sep 5,648, oct 10,926, 23,370 total">
+  <blockquote>“we cut a stable version release of the client once a day.”
+    <cite>— Lauren Tan (@poteto) · <a href="https://www.youtube.com/watch?v=O_zcc6Xl12g" target="_blank" rel="noopener">All Code Is Slop (Except Mine)</a></cite>
+  </blockquote>
+  <aside class="notes">
+    <ul>
+      <li>alguno entro en esta de medirse los PRs? a ver quien hace pis mas lejos?</li>
+      <li>comentario sobre que mete en 11k pr en un solo sistema que es un chatbot???</li>
+      <li>comment about the infrastructure and spend in CI at this scale. Token-rich vs Token-poor</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide pq">
+  <h2 class="aside-h">meanwhile at home...</h2>
+  <img style="width:80vw;height:auto" src="material/slack-sol-guideline.png" alt="Slack: Mirá al IDIOTA de sol. En extra high. Agent: I didn't read the development guide before installing the tools. It explicitly says, NEVER install dependencies or run commands on the host. Installing them in /tmp still violated that rule.">
+</section>
+
+<section class="slide pq">
+  <a href="https://x.com/dexhorthy/status/2123162993550823688" target="_blank" rel="noopener"><img style="height:80vh;width:auto;max-height:80vh" src="material/dex-mario-bastards.png" alt="dex (@dexhorthy): fire from @badlogicgames - I know too many people that kid themselves, that if the agent has written a metric ton of either linting rules or unit tests or end to end tests, the system is good. the system is not. the reason for that is they are still goal-seeking, reward-hacking little bastards and they will just lie to you...or they will measure the wrong thing. ...unless you have a very good insight into what is happening under the hood, you have no idea if your verifications are actually worth anything"></a>
+  <aside class="notes">
+    <ul>
+      <li>Lauren talks about trust. I think the key is <em>value</em></li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide tv">
+  <b>Trust</b>
+  <span>does not give you</span>
+  <b>Value</b>
+</section>
+
+<!-- 4. to code review or not to code review -->
+<section class="slide full hamlet" data-sec="review">
+  <img src="material/hamlet-pr.png" alt="An Elizabethan engineer holds up a skull while a huge diff printout piles up on the stage">
+  <div class="hamlet-title left"><span>to</span><b>Review</b></div>
+  <div class="hamlet-title right"><span>or not to</span><b>Review</b></div>
+</section>
+
+<section class="slide scroll">
+  <img src="material/pr-relay-1-open.png" alt="Open PR DOX-5598: Make the test suite deterministic, 89 commits, 396 files changed">
+</section>
+
+<section class="slide scroll">
+  <img src="material/pr-relay-2-meme.png" alt="Open PR with a reply: Do you really expect me to read... All That Shit! By You">
+</section>
+
+<section class="slide scroll to-bottom">
+  <img src="material/pr-code-review-stamp.png" alt="Same PR, approved by the meme poster and merged by the author">
+  <aside class="notes">
+    <ul>
+      <li>Lo vi. Le dije que me parecía que no iba por ahí la solución al code review</li>
+      <li>[5:27 PM]O sea no es que hacer code Review está mal</li>
+      <li>[5:28 PM]Pero no es la herramienta adecuada para lo que la estamos usando ahora</li>
+      <li>[5:28 PM]Ni el modo</li>
+      <li>[5:28 PM]Hasta te diría que los PRs son el problema</li>
+      <li>[5:29 PM]Porque son code-oriented y ahora necesitamos algo idea/solution oriented</li>
+      <li>[5:29 PM]Y la joda de tener un agente no ayuda por qué a la larga lo que yo quiero hacer es entender cómo pensaste tu solución que decisiones tomaste y porque</li>
+      <li>[5:30 PM]Eso está en tu cabeza</li>
+      <li>[5:30 PM]Las preguntas que yo le voy a hacer al agente en la mia</li>
+      <li>[5:30 PM]O sea que no tiene sentido que ni vos ni yo le pidamos al agente que adivine que hay en la cabeza del otro</li>
+      <li>[5:31 PM]La única forma es hablarlo creo</li>
+      <li>[5:32 PM]El PR de agua estaba lleno de cosas raras</li>
+      <li>[5:32 PM]Cuando le pregunto y termino de entender la solución las decisiones que había tomado estaban bien</li>
+      <li>[5:33 PM]Pero el código no las hace evidentes</li>
+      <li>[5:33 PM]Por el estilo de Claude o por lo que sea</li>
+      <li>[5:33 PM]Me chupa un huevo en un punto lo lindo del codigo (edited)</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide steps pts">
+  <ol>
+    <li class="step" data-s="0"><div><b>Rejected PR ⇒ 4 scenarios you can't tell apart</b><small>bad feature spec · hidden decisions · author oversight · “claude told me to”</small></div></li>
+    <li class="step" data-s="1"><div><b>Code as a path to understanding</b><small>you don't care about the code, only the solution, the decisions, the architecture</small><small>reconstructing that from code is too expensive: solve it in your head, work on the drift, endless back-and-forth</small></div></li>
+    <li class="step" data-s="2"><div><b>PR stage is already too late</b><small>implemented, tested, approved by product</small></div></li>
+  </ol>
+  <aside class="notes">
+    <ul>
+      <li>… un PR que tiene cosas raras y no se si es por que la feature es una mierda y no queda otra, si es porque hay una pila de decisiones que yo no estoy viendo desde el código, si son detalles qeu al autor se le pasó por alto, o si simplementes es lo que se le ocurrió a claude que era lo mejor y nadie le dijo nada.</li>
+      <li>4 escenario completamente diferentes que no puedo diferenciar.  No nos sirve.</li>
+      <li>No quiero leer código, el código no me interesa el código en sí. Solo me interesa como medio para entender como es la solución, qué cosas probaron, que decisiones tomaron, sobre todo cómo cambia/extiende o afecta la arquitectura de la app.</li>
+      <li>Hacer eso a partir del código cuesta un huevo.</li>
+      <li>Básicamente tengo que resolver el problema yo en mi cabeza, pensar como lo implementaría,  entender como lo implementó la otra persona y laburar sobre el drift.  Antes era factible y había tiempo de hacer todo. Ahora creo que ya no.</li>
+      <li>Para hacerlo  generalmente necesito mil idas y vueltas entre devs. Antes eran comments de github. Ahora son un perno.</li>
+      <li>lentisimo, fuera de contexto. atrasan todo.</li>
+      <li>El code review como lo venimos usando (de la misma forma que siempre) no funca.</li>
+      <li>A una feature implementada (no me importa como, si claude, si a mano si gpt, es anecdótico a esta altura), testeada, aprobada por producto, ya es muy tarde para andar mirando el código.</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide">
+  <img src="material/thorsten-evans-prs.png" style="height:85vh;width:auto;max-height:85vh" alt="Thorsten Ball: Benedict Evans on rethinking how you work with AI. Yes, he's talking about you all still using pull requests. Screenshot of Evans' text with highlights">
+  <aside class="notes">
+    <ul>
+      <li>Thorsten Ball: "Benedict Evans on rethinking how you work with AI. Yes, he's talking about you all still using pull requests."</li>
+      <li>https://x.com/thorstenball/status/2124743669781594564</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide steps pts">
+  <ol>
+    <li class="step" data-s="0"><div><b>Code review function changed</b><small>“Look for weird stuff.” They're signs the agent is drifting, a decision that wasn't taken, a badly thought-out solution, or a missing skill or guideline.</small></div></li>
+    <li class="step" data-s="1"><div><b>All code work must be part of implementation</b><small>Checking that the agent followed the app's guidelines doesn't happen in code review either, because it's too late. That's the job of whoever works with the code. The same goes for the tests.</small></div></li>
+  </ol>
+  <aside class="notes">
+    <ul>
+      <li>Sobre todo por que la función del code review no es mas la que tenía.</li>
+      <li>El código no lo tengo que mirar yo, lo tienen que mirar quien hace el PR.</li>
+      <li>Qué buscamos? cosas raras. Porque son indicios de que el agente está desvariando y que hay una decision que no se tomó.</li>
+      <li>o que algo en la solución está mal pensado</li>
+      <li>o que nos falta un skill / guideline</li>
+      <li>La revisión de que lo que el agente hizo respeta los lineamientos de la app, eso no se revisa en code review tampoco. es muy tarde. no tiene sentido que yo tenga uqe agarrar mi agente y decirle “fijate que en esta branch no haya instancias de este guideline roto”. todos esos checkeos lo tiene que hacer quien esté trabajando con le código.</li>
+      <li>lo mismo con los tests (sirven?, no sirven?, testean lo que tienen que testear? están repetidos? de mas?)</li>
+      <li>Todo el laburo sobre el código es parte de la implementación.</li>
+    </ul>
+  </aside>
+</section>
+
+<!-- 5. hot takes — the rediscovery of architecture -->
+<section class="slide cover c-hot" data-sec="hot">
+  <h1>Hot takes</h1>
+</section>
+
+<section class="slide">
+  <svg viewBox="0 0 1340 600" style="width:94vw;max-height:88vh" role="img" aria-label="Lauren Tan (@poteto): hot take: you don't need a software factory, and i don't love the term. it's just marketing. all you need is good software engineering and investing your tokens in the right places. the more deterministic the better (and token efficient). Pyramid, top to bottom: codebase (good api design, architecture, refactoring), static analysis (lints, types, compilers, tests, ci), verification (formal, empirical), prose (rules, skills, AGENTS.md), human review.">
+    <defs><filter id="rough-a"><feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="4"/></filter></defs>
+    <a href="https://x.com/poteto/status/2118613050462728659" target="_blank" rel="noopener"><image href="material/poteto-pyramid.png" x="374" y="13" width="592" height="574"/></a>
+  </svg>
+  <aside class="notes">
+    <ul>
+      <li>LOL her pyramid contradict with her self. and we ALWAYS knew that architecture matters. architecture is code. so you need to read it</li>
+      <li>no I mean, following the pyramid, .md skills and agents.md are a tiny piece 10x smaller compared to architecture approx?</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide">
+  <svg viewBox="0 0 1340 600" style="width:94vw;max-height:88vh" role="img" aria-label="Lauren Tan (@poteto): hot take: you don't need a software factory, and i don't love the term. it's just marketing. all you need is good software engineering and investing your tokens in the right places. the more deterministic the better (and token efficient). Pyramid, top to bottom: codebase (good api design, architecture, refactoring), static analysis (lints, types, compilers, tests, ci), verification (formal, empirical), prose (rules, skills, AGENTS.md), human review. A hand-drawn arrow from the prose level points to pstack: 61 skills, 148 .md files, 6,694 lines, 73,561 words">
+    <defs><filter id="rough"><feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="4"/></filter></defs>
+    <a href="https://x.com/poteto/status/2118613050462728659" target="_blank" rel="noopener"><image href="material/poteto-pyramid.png" x="374" y="13" width="592" height="574"/></a>
+    <g fill="none" stroke="#d1242f" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" filter="url(#rough)">
+      <ellipse cx="664" cy="447" rx="78" ry="30" transform="rotate(-4 664 447)"/>
+      <path d="M746,440 C800,470 860,500 905,460 C945,425 935,350 975,318 C985,310 995,305 1006,302"/>
+      <path d="M982,288 L1008,301 L987,322"/>
+    </g>
+    <a href="https://github.com/cursor/plugins/tree/main/pstack" target="_blank" rel="noopener">
+      <g font-family="system-ui, sans-serif" fill="#111">
+        <text x="1022" y="312" font-size="34" font-style="italic" font-family="'Hoefler Text', Georgia, serif">a novel in .md</text>
+        <text x="1024" y="360" font-size="26" font-weight="900">61 <tspan font-size="18" font-weight="400">skills</tspan></text>
+        <text x="1024" y="392" font-size="26" font-weight="900">148 <tspan font-size="18" font-weight="400">.md files</tspan></text>
+        <text x="1024" y="424" font-size="26" font-weight="900">6,694 <tspan font-size="18" font-weight="400">lines</tspan></text>
+        <text x="1024" y="456" font-size="26" font-weight="900">73,561 <tspan font-size="18" font-weight="400">words</tspan></text>
+      </g>
+    </a>
+  </svg>
+</section>
+
+<section class="slide eras">
+  <div class="row">
+    <span class="era">prompt<small>engineering</small></span><span class="arrow">→</span>
+    <span class="era">loop<small>engineering</small></span><span class="arrow">→</span>
+    <span class="era">harness<small>engineering</small></span><span class="arrow">→</span>
+    <span class="era">architecture<small>engineering</small></span>
+  </div>
+  <cite>Stephen Margheim · <a href="https://www.youtube.com/watch?v=OmrdvAzCSIc" target="_blank" rel="noopener">The ZArchitecture</a></cite>
+  <aside class="notes">
+    <ul>
+      <li>parece que la juventud está redescubriendo la ingenieria de software.</li>
+      <li>saben a qué me hace acordar? a node, que 15 años despues se dieron cuenta que había que renderizar html en el server como en el 2003</li>
+      <li>si seguimos por esta línea, en 6 meses estamos escribiendo el código a mano de nuevo</li>
+    </ul>
+  </aside>
+</section>
+
+<!-- 6. factories don't work -->
+<section class="slide cover c-factory" data-sec="factory">
+  <h1>Factories Don't Work</h1>
+  <aside class="notes">
+    <ul>
+      <li>Skill packs / factories dont work unless you have created the proper foundations for them to work.</li>
+      <li>Y está esa fantasía que los skills y los prompts te ayudan. Un choto. Se los pasa por los huevos</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide">
+  <a href="https://x.com/thorstenball/status/2122922612770632070" target="_blank" rel="noopener"><img src="material/thorsten-poteto-mode.png" style="width:70vw;height:auto;max-height:85vh" alt="Jack Ellis: Yep so I have skills in our codebase that I want to use with autocomplete. I previously would type / and they'd appear. And what do you use instead of poteto mode? I've found it to be wildly good vs regular Claude. Thorsten Ball: We don't use anything instead of poteto mode. And it works fine without :)"></a>
+  <aside class="notes">
+    <ul>
+      <li>Thorsten Ball: I also personally think that invoking skills with slash customs is probably an anti-pattern:</li>
+      <li>you want the skill to be discoverable enough without a slash command</li>
+      <li>if it's a highly specific thing that's deterministically invoked, it makes me wonder why one uses the model as a workflow executor vs giving it a high-level goal and figuring it out</li>
+      <li>codebase should be self-explanatory and legible to the agent without deterministic invocation by human. If human has to tell agent when and how to review with highly specific skills, something probably went wrong somewhere else before</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide">
+  <a href="https://x.com/Steve_Yegge/status/2121671447810888185" target="_blank" rel="noopener"><img src="material/yegge-factory-hot-take.png" style="height:85vh;width:auto;max-height:85vh" alt="Steve Yegge: Hot take #2: Should you buy a software factory? Do you even need one? No. You probably don't need one. Factories take an extraordinary amount of upkeep. They turn into garbage mountains unless you put a frightening amount of time and tokens into curating them. I had to burn my previous five factories down since it eventually became cheaper to rewrite them than to fix them. ... It's a company in a box. And they're easy for Claude to build for you."></a>
+  <aside class="notes">
+    <ul>
+      <li>this was gas town guy, the factory of factories</li>
+    </ul>
+  </aside>
+</section>
+
+<!-- 7. I made a game engine! -->
+<section class="slide cover c-game" data-sec="game">
+  <h1 class="stack">I made<br><small>a</small><br>Game Engine!</h1>
+</section>
+
+<!-- 8. I ~made~ asked for a game engine -->
+<section class="slide cover c-game">
+  <h1 class="stack">I <del>made</del> <ins>asked for</ins><br><small>a</small><br>Game Engine!<span class="emo">😅</span></h1>
+</section>
+
+<section class="slide copro">
+  <h1>coprolito</h1>
+  <p>a jewel made of shit</p>
+  <a class="play" href="blasteroids.html" target="_blank">▶ blasteroids</a>
+  <aside class="notes">
+    <ul>
+      <li>historia de coprolito</li>
+      <li>cómo reconciliamos las ideas slop</li>
+    </ul>
+  </aside>
+</section>
+
+<!-- 9. the upside-down dev cycle -->
+<section class="slide updown" data-sec="updown">
+  <h1><span class="bar"></span><span class="l1"><big>T</big>HE UPSIDE-DOW<big>N</big></span><span class="l2">DEV CYCLE</span><span class="bar"></span></h1>
+</section>
+
+<section class="slide cycle steps">
+  <div class="row old"><span>spec</span><i>→</i><span>analysis</span><i>→</i><span>solution design</span><i>→</i><span>code</span><i>→</i><span>verification <small>(QA)</small></span><i>→</i><span>ship</span></div>
+  <div class="row new step" data-s="0"><span>code</span><i>→</i><span>verify</span><i>→</i><span>analysis</span><i>→</i><span>decide</span><i>→</i><span>ship</span></div>
+  <aside class="notes">
+    <ul>
+      <li>arrancar de algo tangible</li>
+      <li>el código es descartable</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide pq">
+  <img src="material/dex-eugeneyan-attention.png" style="width:70vw;height:auto;max-height:72vh;object-fit:contain" alt="dex (@dexhorthy): this guy @eugeneyan gets it. Quoting swyx: Cost per task is a misleading metric; the scarce resource is human attention, not token cost. beware the pareto frontier charts that make you believe you can reduce every model to 2 numbers; it can hide some AWFUL reliability issues">
+  <cite>Dex Horthy · <a href="https://ai.engineer/talks/Ib5GBkD555M-harness-engineering-is-not-enough-why-software" target="_blank" rel="noopener">Harness engineering is not enough</a></cite>
+</section>
+
+<section class="slide claim list">
+  <b>The code is the specification</b>
+  <b class="next">Every codebase is its own beast</b>
+  <b class="next">Every artifact is an opportunity to miss something</b>
+  <small>fewer artifacts · shorter artifacts · review where it's worth more</small>
+  <aside class="notes">
+    <ul>
+      <li>I think the whole material selection is wrong for this section. The idea would be to talk a little bit about open specs and those huge skill packs, and pre-made software factories, agentic factories, AI factories, that I think they don&#x27;t work because of this, because they&#x27;re basically slot machines that generates a ton of intermediary artifacts, and the key is every artifact is an opportunity to miss something. It&#x27;s something you must review, and it&#x27;s an opportunity to miss something. So the less artifacts we have, the better the system will work. And the shorter the artifacts, the better. In a sense, is we need to stop reviewing, but not to stop reviewing, but concentrate the amount of review where it is worth more, as much as possible. Again, we are talking once again about value.</li>
+    </ul>
+  </aside>
+</section>
+
+<section class="slide claim huge">
+  <b>Judgement</b>
+  <aside class="notes">
+    <ul>
+      <li>The key here is what we review things to. What we need is not to review, but to inject judgment. I think that&#x27;s the key thing of value. And we need to build the system around that, around maximizing the opportunities to inject judgment. And that changes the perspective a lot, I think. Because what you end up with is using agents to search, to prototype, to gather information, present it to you in a way that&#x27;s comfortable for you to analyze and understand it, and then to take a decision. I think this is the key for everything. And that&#x27;s probably the opening for the upside down section</li>
+      <li>→ hook to the next section</li>
+    </ul>
+  </aside>
+</section>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><filter id="sdlc-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur in="SourceGraphic" stdDeviation="8" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter><filter id="sdlc-tglow" x="-20%" y="-60%" width="140%" height="220%"><feGaussianBlur in="SourceGraphic" stdDeviation="7" result="b1"/><feGaussianBlur in="SourceGraphic" stdDeviation="20" result="b2"/><feMerge><feMergeNode in="b2"/><feMergeNode in="b1"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs></svg>
+<div id="notes"></div>
+<div id="counter"></div>
+<button id="fs" title="Full screen (f)" aria-label="Toggle full screen">⛶</button>
+
+<script>
+  const slides = [...document.querySelectorAll('.slide')];
+  const notesEl = document.getElementById('notes');
+  const counter = document.getElementById('counter');
+  { let sec = ''; slides.forEach(sl => { if (sl.dataset.sec) sec = sl.dataset.sec; if (sec) sl.classList.add('sec-' + sec); }); }
+  let i = Math.max(0, Math.min(slides.length - 1, (parseInt(location.hash.slice(1), 10) || 1) - 1));
+  // diff-style green background behind added words (tspan.add), measured once the slide is visible
+  function markAdds(sl) {
+    sl.querySelectorAll('tspan.add').forEach(t => {
+      if (t.dataset.hl) return;
+      const b = t.getBBox(); if (!b.width) return;
+      const r = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      r.setAttribute('class', 'diff'); r.setAttribute('rx', 3);
+      r.setAttribute('x', b.x - 3); r.setAttribute('y', b.y - 1); r.setAttribute('width', b.width + 6); r.setAttribute('height', b.height + 2);
+      const txt = t.closest('text'); txt.parentNode.insertBefore(r, txt);
+      t.dataset.hl = 1;
+    });
+  }
+  // bouncing words (DVD screensaver style), only while their slide is visible
+  let bounceRaf = 0;
+  function bounce(sl) {
+    cancelAnimationFrame(bounceRaf);
+    const ws = [...sl.querySelectorAll('.bw')];
+    if (!ws.length) return;
+    const W = sl.clientWidth, H = sl.clientHeight;
+    const st = ws.map((w, k) => ({ w, e: w.querySelector('i'), s: w.offsetWidth, x: (k % 2 ? .65 : .1) * W + Math.random() * W * .2, y: (k > 1 ? .6 : .08) * H + Math.random() * H * .15,
+      dx: (k % 2 ? -1 : 1) * (1.2 + Math.random()), dy: (k > 1 ? -1 : 1) * (1 + Math.random()),
+      r: Math.random() * 360, dr: (k % 2 ? 1 : -1) * (1 + Math.random() * 1.5), sx: 1, sy: 1, wob: 0 }));
+    st.forEach(o => o.w.onclick = () => { o.dx = (Math.random() - .5) * 18; o.dy = (Math.random() - .5) * 18; o.dr *= -4; o.sx = 1.4; o.sy = 1.4; });
+    (function tick() {
+      if (!sl.classList.contains('active')) return;
+      st.forEach(o => {
+        const mw = sl.clientWidth - o.s, mh = sl.clientHeight - o.s;
+        o.x += o.dx; o.y += o.dy;
+        if (o.x < 0 || o.x > mw) { o.dx *= -1; o.x = Math.max(0, Math.min(mw, o.x)); o.sx = .7; o.sy = 1.3; o.wob = 1; }
+        if (o.y < 0 || o.y > mh) { o.dy *= -1; o.y = Math.max(0, Math.min(mh, o.y)); o.sx = 1.3; o.sy = .7; o.wob = 1; }
+        // friction back to cruising speed after a kick
+        const v = Math.hypot(o.dx, o.dy); if (v > 2.6) { o.dx *= .985; o.dy *= .985; }
+        if (Math.abs(o.dr) > 2.5) o.dr *= .97;
+      });
+      // bump into each other (equal-mass elastic swap along the normal)
+      for (let a = 0; a < st.length; a++) for (let b = a + 1; b < st.length; b++) {
+        const A = st[a], B = st[b], nx = B.x - A.x, ny = B.y - A.y, d = Math.hypot(nx, ny), min = (A.s + B.s) * .42;
+        if (d > 0 && d < min) {
+          const ux = nx / d, uy = ny / d, p = (A.dx - B.dx) * ux + (A.dy - B.dy) * uy;
+          if (p > 0) { A.dx -= p * ux; A.dy -= p * uy; B.dx += p * ux; B.dy += p * uy; A.sx = B.sx = 1.25; A.sy = B.sy = .8; A.wob = B.wob = 1; }
+          const push = (min - d) / 2; A.x -= ux * push; A.y -= uy * push; B.x += ux * push; B.y += uy * push;
+        }
+      }
+      st.forEach(o => {
+        o.sx += (1 - o.sx) * .15; o.sy += (1 - o.sy) * .15; o.wob *= .93; o.r += o.dr;
+        const tilt = Math.sin(performance.now() / 260 + o.s) * 6 * (1 + o.wob * 3);
+        o.w.style.transform = `translate(${o.x}px, ${o.y}px) rotate(${tilt}deg) scale(${o.sx}, ${o.sy})`;
+        o.e.style.transform = `rotate(${o.r}deg)`;
+      });
+      bounceRaf = requestAnimationFrame(tick);
+    })();
+  }
+  function toggleFs() { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); }
+  document.getElementById('fs').addEventListener('click', toggleFs);
+  // presenter sync: 'p' opens a second window (notes on); both windows follow each other via postMessage
+  let peer = window.opener || null;
+  if (new URLSearchParams(location.search).has('notes')) document.body.classList.add('show-notes');
+  function sync() { if (peer && !peer.closed) peer.postMessage({ sync: { i, cur: +(slides[i].dataset.cur ?? -1) } }, '*'); }
+  function setStep(sl, nx) {
+    sl.dataset.cur = nx;
+    sl.querySelectorAll('.step, .unstep').forEach(e => e.classList.toggle('on', +e.dataset.s <= nx));
+  }
+  function show(n, quiet) {
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach((s, k) => s.classList.toggle('active', k === i));
+    if (slides[i].classList.contains('scroll')) slides[i].scrollTop = slides[i].classList.contains('to-bottom') ? slides[i].scrollHeight : 0;
+    markAdds(slides[i]);
+    bounce(slides[i]);
+    const notes = slides[i].querySelector('.notes');
+    notesEl.innerHTML = notes ? notes.innerHTML : '';
+    counter.textContent = (i + 1) + ' / ' + slides.length;
+    history.replaceState(null, '', '#' + (i + 1));
+    if (!quiet) sync();
+  }
+  // .off slides are left out of the arrow-key flow; they are reached through links
+  function near(k, d) { do { k += d; } while (k > 0 && k < slides.length - 1 && slides[k].classList.contains('off')); return k; }
+  function stepTo(sl, d) {
+    const st = [...sl.querySelectorAll('.step, .unstep')];
+    if (!st.length) return false;
+    const max = Math.max(...st.map(e => +e.dataset.s));
+    const cur = +(sl.dataset.cur ?? -1), nx = cur + d;
+    if (nx < -1 || nx > max) return false;
+    setStep(sl, nx); sync();
+    return true;
+  }
+  document.addEventListener('keydown', e => {
+    if (['ArrowRight', 'ArrowDown', ' ', 'PageDown'].includes(e.key) && stepTo(slides[i], 1)) { e.preventDefault(); return; }
+    if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key) && stepTo(slides[i], -1)) { e.preventDefault(); return; }
+    if (slides[i].classList.contains('scroll') && ['ArrowUp', 'ArrowDown'].includes(e.key)) return;
+    if (['ArrowRight', 'ArrowDown', ' ', 'PageDown'].includes(e.key)) { e.preventDefault(); show(near(i, 1)); }
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); show(near(i, -1)); }
+    else if (e.key === 'n') document.body.classList.toggle('show-notes');
+    else if (e.key === 'f') toggleFs();
+    else if (e.key === 'p') { peer = window.open(location.pathname + '?notes#' + (i + 1), 'deck-notes'); }
+  });
+  document.querySelectorAll('.slide.to-bottom img').forEach(img => img.addEventListener('load', () => { const sl = img.closest('.slide'); sl.scrollTop = sl.scrollHeight; }));
+  window.addEventListener('hashchange', () => {
+    const h = location.hash.slice(1), el = document.getElementById(h);
+    const k = el ? slides.indexOf(el) : parseInt(h, 10) - 1;
+    if (k >= 0 && k !== i) show(k);
+  });
+  window.addEventListener('message', e => {
+    if (e.data && e.data.sync) {
+      peer = e.source;
+      const { i: k, cur } = e.data.sync;
+      if (k !== i) show(k, true);
+      if (+(slides[i].dataset.cur ?? -1) !== cur) setStep(slides[i], cur);
+      return;
+    }
+    const fr = slides[i].querySelector('iframe');
+    if (!fr || e.source !== fr.contentWindow) return;
+    if (e.data && e.data.deck === 'fullscreen') return toggleFs();
+    if (![1, -1].includes(e.data && e.data.deck)) return;
+    show(near(i, e.data.deck)); fr.blur(); window.focus();
+  });
+  show(i);
+</script>
+</body>
+</html>

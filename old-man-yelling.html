@@ -1,0 +1,658 @@
+<title>Old Man Yelling at the Claudes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bangers&family=Bungee&family=Cinzel+Decorative:wght@700;900&family=Comic+Neue:wght@700&family=Creepster&family=Fredoka:wght@700&family=Monoton&family=Permanent+Marker&family=Playfair+Display:wght@900&family=Press+Start+2P&family=Righteous&family=Rubik+Mono+One&family=Russo+One&family=Rye&family=Shrikhand&family=Special+Elite&family=UnifrakturMaguntia&family=VT323&display=swap">
+<style>
+/* Layout: one full-screen world per slide; every slide brings its own palette, they are meant to clash */
+:root{
+  --bg:#000; --fg:#fff; --hud:#9a9a9a; --stamp:#d0021b;
+  --f-mono:'Press Start 2P',ui-monospace,monospace;
+  --f-type:'Special Elite','Courier New',monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;overflow:hidden}
+body{background:var(--bg);color:var(--fg);font-family:system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.slide{position:fixed;inset:0;display:none;overflow:hidden;user-select:none}
+.slide.active{display:block}
+.fill{position:absolute;inset:0}
+.center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px}
+h1{margin:0;text-wrap:balance}
+.stamp{position:absolute;right:max(3vmin,env(safe-area-inset-right,0px));bottom:max(4vmin,env(safe-area-inset-bottom,0px));z-index:60;font-family:var(--f-type);font-size:clamp(10px,1.7vmin,18px);letter-spacing:.12em;color:var(--stamp);border:3px double var(--stamp);padding:.35em .7em;transform:rotate(-11deg);background:#fff8;border-radius:4px;animation:stampin .5s 1.2s cubic-bezier(.2,1.8,.4,1) both}
+@keyframes stampin{from{transform:rotate(-30deg) scale(3);opacity:0}to{transform:rotate(-11deg) scale(1);opacity:1}}
+#hud{position:fixed;left:max(10px,env(safe-area-inset-left,0px));bottom:max(8px,env(safe-area-inset-bottom,0px));z-index:999;font:10px/1 var(--f-mono);color:var(--hud);mix-blend-mode:difference;pointer-events:none}
+.frag{opacity:0;transform:scale(.2) rotate(-20deg);transition:opacity .3s,transform .45s cubic-bezier(.3,1.7,.5,1)}
+.frag.on{opacity:1;transform:none}
+@keyframes rot{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.slide *,.slide *::before,.slide *::after{animation-duration:20s!important}}
+
+/* ---------- 0 · TITLE: pastel sky full of asterisk clouds ---------- */
+#s0{background:linear-gradient(#55c3ff,#bfe8ff 45%,#ffe0ef 75%,#ffd27a)}
+#s0 .cloud{position:absolute;left:-25%;top:var(--t);font-size:var(--s);color:#fff;text-shadow:0 0 40px #fff,0 .06em 0 #dff1ff;animation:drift var(--d) linear infinite;animation-delay:var(--dl);line-height:1}
+@keyframes drift{to{left:115%}}
+#s0 h1{font-family:'Rubik Mono One',Impact,sans-serif;font-size:clamp(26px,7.6vw,128px);line-height:.95;color:#2b1d0e;text-shadow:.05em .05em 0 #ffcf00,.1em .1em 0 #ff4d6d;transform:rotate(-3deg);max-width:14ch}
+#s0 .sub{margin-top:4vmin;font:clamp(9px,1.6vmin,16px)/1.6 var(--f-mono);color:#2b1d0e;background:#fff;padding:.6em 1em;border:3px solid #2b1d0e;transform:rotate(2deg)}
+#s0 .fist{position:absolute;left:6vw;bottom:-3vmin;font-size:24vmin;transform-origin:50% 100%;animation:shake .22s infinite alternate}
+@keyframes shake{from{transform:rotate(-16deg)}to{transform:rotate(14deg) translateY(-2vmin)}}
+#s0 .yell{position:absolute;left:calc(6vw + 20vmin);bottom:18vmin;background:#fff;border:4px solid #000;border-radius:50%;padding:.8em 1.2em;font-family:Bangers,Impact,sans-serif;font-size:clamp(18px,4.5vmin,56px);animation:pop 1s infinite}
+@keyframes pop{0%,100%{transform:scale(1) rotate(-8deg)}50%{transform:scale(1.18) rotate(5deg)}}
+#s0 .hint{position:absolute;right:16px;top:max(16px,env(safe-area-inset-top,0px));font:9px var(--f-mono);color:#2b1d0e99}
+
+/* ---------- 1 · NOBODY KNOWS NOTHING: fortune teller, the ball is loading ---------- */
+#s1{background:radial-gradient(circle at 50% 62%,#5a1a86,#170027 55%,#000)}
+#s1 .sky{position:absolute;inset:0}
+#s1 .sky i{position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;animation:tw var(--d) ease-in-out infinite alternate}
+@keyframes tw{from{opacity:.1}to{opacity:1}}
+#s1 h1{position:absolute;top:max(5vh,env(safe-area-inset-top,0px));left:16px;right:16px;text-align:center;font-family:'Cinzel Decorative',Georgia,serif;font-weight:900;font-size:clamp(26px,7vw,112px);line-height:1;background:linear-gradient(90deg,#9c6b00,#fff4b8,#d4a017,#fff4b8,#9c6b00);background-size:200%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shim 3s linear infinite}
+@keyframes shim{to{background-position:200% 0}}
+#s1 .ball{position:absolute;left:50%;top:62%;width:32vmin;height:32vmin;margin:-16vmin 0 0 -16vmin;border-radius:50%;background:radial-gradient(circle at 34% 28%,#ffffffcc 0 6%,#d9b8ff66 18%,#5c1d8a 62%,#2a0742);box-shadow:0 0 90px #b56cff,0 0 200px #7a2cff66,inset 0 0 50px #fff4;display:grid;place-items:center;animation:breathe 3s ease-in-out infinite}
+@keyframes breathe{50%{box-shadow:0 0 140px #d9a6ff,0 0 260px #7a2cffaa,inset 0 0 50px #fff6}}
+#s1 .spin{width:36%;height:36%;border-radius:50%;border:.9vmin solid #ffffff22;border-top-color:#fff;animation:rot .9s linear infinite}
+#s1 .base{position:absolute;left:50%;top:calc(62% + 14vmin);width:26vmin;height:7vmin;transform:translateX(-50%);background:linear-gradient(#8a5a1a,#3b2006);clip-path:polygon(12% 0,88% 0,100% 100%,0 100%)}
+#s1 .orbit{position:absolute;left:50%;top:62%;width:0;height:0;animation:rot 26s linear infinite}
+#s1 .orbit span{position:absolute;left:0;top:0;transform:rotate(calc(var(--i)*60deg)) translateX(clamp(150px,40vmin,480px)) rotate(calc(var(--i)*-60deg))}
+#s1 .orbit b{display:block;white-space:nowrap;font-family:'Archivo Black',Impact,sans-serif;font-weight:400;font-size:clamp(9px,1.8vmin,20px);background:#fff;color:#111;padding:.4em .7em;animation:unrot 26s linear infinite;box-shadow:4px 4px 0 #ff2bd6}
+@keyframes unrot{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(-360deg)}}
+
+/* ---------- 2 · $3.5M: Swiss poster, a tiny laptop on a giant cord ---------- */
+#s2{background:#efece3;color:#111}
+#s2 .price{position:absolute;top:max(4vh,env(safe-area-inset-top,0px));left:max(4vw,16px);font-family:'Archivo Black',Impact,sans-serif;font-size:clamp(44px,12.5vw,230px);line-height:.82;letter-spacing:-.05em;color:#e10600}
+#s2 .price small{display:block;font-size:.26em;letter-spacing:0;color:#111;margin-top:.3em}
+#s2 .monster{position:absolute;right:-8vw;top:8vh;width:40vw;height:96vh;background:repeating-linear-gradient(#141414 0 2.2vmin,#2c2c2c 2.2vmin 2.7vmin);animation:hum .07s infinite alternate;box-shadow:-2vmin 0 0 #000}
+#s2 .monster::before{content:"";position:absolute;inset:0;background:radial-gradient(circle,#3dff6e 0 .25vmin,transparent .35vmin) 0 0/3.2vmin 2.7vmin;animation:blink .6s steps(2) infinite}
+@keyframes hum{to{transform:translate(2px,-1px)}}
+@keyframes blink{50%{opacity:.25}}
+#s2 svg{position:absolute;inset:0;width:100%;height:100%}
+#s2 .cord{fill:none;stroke:#111;stroke-width:7}
+#s2 .juice{fill:none;stroke:#ffd500;stroke-width:4;stroke-dasharray:18 140;animation:flow 1.2s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-158}}
+#s2 .laptop{position:absolute;left:12vw;bottom:9vh;font-size:5vmin;line-height:1}
+#s2 .you{position:absolute;left:calc(12vw - 1vmin);bottom:calc(9vh + 7vmin);font:clamp(9px,1.4vmin,14px) var(--f-mono);background:#111;color:#efece3;padding:.5em .7em;animation:bob 1s ease-in-out infinite alternate}
+#s2 .you::after{content:"";position:absolute;left:1.5vmin;top:100%;border:.8vmin solid transparent;border-top-color:#111}
+@keyframes bob{to{transform:translateY(-1vmin)}}
+#s2 .foot{position:absolute;left:max(4vw,16px);bottom:max(3vh,env(safe-area-inset-bottom,0px));font:clamp(10px,1.6vmin,16px) var(--f-type);color:#555}
+
+/* ---------- 3 · PR PORN: a slot machine that only pays in PRs ---------- */
+#s3{background:radial-gradient(circle at 50% 40%,#a00012,#3a0006 70%,#120002)}
+#s3 .bulbs{position:absolute;inset:2vmin;border:1.2vmin dotted #ffd84a;border-radius:2vmin;animation:bulbs .4s steps(2) infinite}
+@keyframes bulbs{50%{border-color:#ff3df2}}
+#s3 h1{font-family:Monoton,Impact,sans-serif;font-weight:400;font-size:clamp(42px,13vw,210px);line-height:1;color:#ffe8fb;text-shadow:0 0 .05em #fff,0 0 .15em #ff2bd6,0 0 .4em #ff2bd6,0 0 .8em #ff2bd6;animation:flick 3.2s infinite}
+@keyframes flick{0%,18%,22%,62%,64%,100%{opacity:1}20%,63%{opacity:.25}}
+#s3 .machine{margin-top:3vmin;display:flex;align-items:center;gap:1vmin;padding:2vmin 2.4vmin;background:linear-gradient(#ffe27a,#c08a00);border-radius:2.4vmin;box-shadow:0 1.6vmin 0 #6a4800,0 0 6vmin #ffd84a88;position:relative}
+#s3 .reel{width:clamp(30px,10vmin,120px);height:clamp(42px,14vmin,168px);overflow:hidden;background:#fffdf2;border-radius:1vmin;box-shadow:inset 0 1.2vmin 1.2vmin #0005,inset 0 -1.2vmin 1.2vmin #0005}
+#s3 .strip{animation:reel 2.6s cubic-bezier(.15,.85,.25,1) both;animation-delay:var(--dl)}
+#s3 .strip div{height:clamp(42px,14vmin,168px);display:grid;place-items:center;font-family:'Archivo Black',Impact,sans-serif;font-size:clamp(30px,10vmin,120px);color:#1a1a1a}
+@keyframes reel{from{transform:translateY(0)}to{transform:translateY(calc(var(--n) * -1 * clamp(42px,14vmin,168px)))}}
+#s3 .comma{font-family:'Archivo Black',Impact,sans-serif;font-size:clamp(24px,8vmin,90px);color:#3a2400;align-self:flex-end}
+#s3 .lever{position:absolute;right:-5vmin;top:50%;width:1.2vmin;height:14vmin;background:#999;transform-origin:50% 100%;translate:0 -100%;animation:pull 2.6s ease-in-out infinite}
+#s3 .lever::before{content:"";position:absolute;left:50%;top:-2.6vmin;width:4.4vmin;height:4.4vmin;margin-left:-2.2vmin;border-radius:50%;background:radial-gradient(circle at 35% 35%,#ff7a7a,#b00000)}
+@keyframes pull{0%,70%,100%{transform:rotate(0)}80%{transform:rotate(160deg)}}
+#s3 .cap{margin-top:3.4vmin;font:clamp(9px,1.7vmin,18px) var(--f-mono);color:#ffd84a;letter-spacing:.15em}
+#s3 .coin{position:absolute;top:-8vmin;left:var(--x);width:5vmin;height:5vmin;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff6b0,#e2a400 60%,#8a5d00);animation:fall var(--d) linear infinite;animation-delay:var(--dl)}
+@keyframes fall{to{transform:translateY(118vh) rotateY(1080deg)}}
+
+/* ---------- 4 · STABLE: a barn at night, wobbling ---------- */
+#s4{background:linear-gradient(#020617,#0b1a55 70%,#13306b)}
+#s4 .sky{position:absolute;inset:0}
+#s4 .sky i{position:absolute;width:2px;height:2px;background:#fff;animation:tw var(--d) ease-in-out infinite alternate}
+#s4 .moon{position:absolute;top:9vh;right:12vw;width:16vmin;height:16vmin;border-radius:50%;box-shadow:-3.4vmin 1.8vmin 0 0 #fff3c4;transform:rotate(-20deg);filter:drop-shadow(0 0 3vmin #fff3c488)}
+#s4 .ground{position:absolute;left:0;right:0;bottom:0;height:16vh;background:#0c2412;border-top:3px solid #173d20}
+#s4 .barn{position:absolute;left:50%;bottom:12vh;width:min(46vmin,70vw);transform-origin:50% 100%;translate:-50% 0;animation:jelly 1.6s ease-in-out infinite}
+@keyframes jelly{0%,100%{transform:skewX(0) scaleY(1)}25%{transform:skewX(7deg) scaleY(.94)}50%{transform:skewX(-2deg) scaleY(1.05)}75%{transform:skewX(-8deg) scaleY(.97)}}
+#s4 h1{position:absolute;top:max(5vh,env(safe-area-inset-top,0px));left:16px;right:16px;text-align:center;font-family:Rye,Georgia,serif;font-weight:400;font-size:clamp(46px,15vw,240px);color:#f5e6c4;text-shadow:.04em .04em 0 #8a2b0e;line-height:1}
+#s4 h1 sup{font-size:.3em;vertical-align:super}
+#s4 .nightly{position:absolute;top:calc(max(5vh,env(safe-area-inset-top,0px)) + clamp(52px,16vw,250px));left:0;right:0;text-align:center;font:clamp(10px,2vmin,22px) var(--f-mono);color:#9fb6ff}
+#s4 .z{position:absolute;left:calc(50% + 16vmin);bottom:calc(12vh + 34vmin);font-family:Bangers,sans-serif;font-size:5vmin;color:#cfe0ff;animation:zz 3s linear infinite;animation-delay:var(--dl);opacity:0}
+@keyframes zz{0%{opacity:0;transform:translate(0,0) scale(.5)}20%{opacity:1}100%{opacity:0;transform:translate(8vmin,-16vmin) scale(1.4)}}
+
+/* ---------- 5 · THE SLOP RELAY: 70s olympic poster, a circle with no exit ---------- */
+#s5{background:repeating-linear-gradient(-45deg,#f4a259 0 7vmin,#e76f51 7vmin 14vmin,#6b3e26 14vmin 21vmin,#f6e7c1 21vmin 28vmin)}
+#s5 h1{position:absolute;top:max(2.5vh,env(safe-area-inset-top,0px));left:16px;right:16px;text-align:center;font-family:Shrikhand,Georgia,serif;font-weight:400;font-size:clamp(28px,7.5vmin,96px);color:#f6e7c1;text-shadow:.06em .06em 0 #3d2416,-.02em -.02em 0 #3d2416}
+#s5 .ring{position:absolute;left:50%;top:56%;width:0;height:0}
+#s5 .track{position:absolute;width:72vmin;height:72vmin;left:-36vmin;top:-36vmin;border-radius:50%;border:1.1vmin dashed #3d2416;background:radial-gradient(circle,#f6e7c1ee 0 52%,transparent 53%);opacity:.25;transition:opacity .6s}
+#s5 .ring:has(.zero.on) .track{opacity:1;animation:rot 14s linear infinite}
+#s5 .node{position:absolute;left:0;top:0;transform:rotate(calc(var(--i)*45deg - 90deg)) translateX(36vmin) rotate(calc(var(--i)*-45deg + 90deg))}
+#s5 .pos{transform:translate(-50%,-50%)}
+#s5 .card{background:#f6e7c1;border:.55vmin solid #3d2416;border-radius:2vmin;padding:.9vmin 1.4vmin;text-align:center;width:max-content;max-width:24vmin;box-shadow:.8vmin .8vmin 0 #3d2416;font-family:'Archivo Black',Impact,sans-serif;font-size:clamp(9px,1.9vmin,22px);color:#3d2416;line-height:1.1}
+#s5 .card b{display:block;font-size:clamp(20px,6vmin,70px);line-height:1.1}
+#s5 .card i{display:block;font-style:normal;font-family:var(--f-type);font-size:clamp(8px,1.5vmin,17px);margin-top:.3em}
+#s5 .zero{position:absolute;transform-origin:center}
+#s5 .zero .z0{transform:translate(-50%,-50%);font-family:Shrikhand,Georgia,serif;font-size:clamp(30px,10vmin,130px);color:#e76f51;text-shadow:.05em .05em 0 #3d2416;white-space:nowrap}
+#s5 .baton{position:absolute;left:0;top:0;width:0;height:0;opacity:0;transition:opacity .5s;animation:rot 3.2s linear infinite}
+#s5 .ring:has(.zero.on) .baton{opacity:1}
+#s5 .baton span{position:absolute;transform:translate(36vmin,-50%) translateX(-50%);font-size:5vmin}
+
+/* ---------- 6 · THE SWITCH: op-art hypnosis, eyelids closing ---------- */
+#s6{background:#000}
+#s6 .spiral{position:absolute;left:50%;top:50%;width:220vmax;height:220vmax;margin:-110vmax 0 0 -110vmax;background:repeating-conic-gradient(#000 0 9deg,#f4f4f4 9deg 18deg);animation:rot 7s linear infinite}
+#s6 .rings{position:absolute;left:50%;top:50%;width:220vmax;height:220vmax;margin:-110vmax 0 0 -110vmax;background:repeating-radial-gradient(circle,#fff 0 3vmin,#000 3vmin 6vmin);mix-blend-mode:difference;animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(1.15)}}
+#s6 .pend{position:absolute;left:50%;top:-4vh;width:.5vmin;height:58vh;background:linear-gradient(#c9a227,#ffe680);transform-origin:50% 0;animation:swing 1.8s ease-in-out infinite alternate;z-index:2}
+#s6 .pend::after{content:"";position:absolute;left:50%;bottom:-6vmin;width:12vmin;height:12vmin;margin-left:-6vmin;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff7c2,#d4a017 55%,#7a5800);box-shadow:0 0 0 .8vmin #7a5800,0 0 4vmin #ffd84a}
+@keyframes swing{from{transform:rotate(-28deg)}to{transform:rotate(28deg)}}
+#s6 h1{position:relative;z-index:3;font-family:Fredoka,'Arial Rounded MT Bold',sans-serif;font-weight:700;font-size:clamp(40px,11vw,190px);line-height:.9;color:#fff;-webkit-text-stroke:.03em #000;paint-order:stroke fill;text-shadow:0 .06em 0 #000;letter-spacing:-.02em}
+#s6 .lid{position:absolute;left:0;right:0;height:0;background:#000;z-index:5;animation:shut 16s cubic-bezier(.6,0,.9,.6) forwards}
+#s6 .lid.t{top:0;border-bottom:1vmin solid #2a0b0b}
+#s6 .lid.b{bottom:0;border-top:1vmin solid #2a0b0b}
+@keyframes shut{0%{height:0}85%{height:46vh}88%{height:30vh}100%{height:49.6vh}}
+
+/* ---------- 7 · REWARD HACKERS: a school notebook, a gremlin with a stamp ---------- */
+#s7{background:#fffdf3 repeating-linear-gradient(transparent 0 3.8vmin,#a9c8ff 3.8vmin calc(3.8vmin + 1.5px));color:#1b1b8a}
+#s7::before{content:"";position:absolute;left:8vw;top:0;bottom:0;width:2px;background:#ff6b6b}
+#s7 h1{position:absolute;top:max(5vh,env(safe-area-inset-top,0px));left:calc(8vw + 3vmin);right:4vw;font-family:'Permanent Marker',cursive;font-weight:400;font-size:clamp(28px,7.4vmin,104px);line-height:1.02;transform:rotate(-2deg);z-index:3}
+#s7 cite{display:block;font-style:normal;font-size:.36em;color:#c0392b;margin-top:.4em}
+#s7 .box{position:absolute;font-family:'Permanent Marker',cursive;font-size:clamp(14px,3vmin,36px);border:3px solid #1b1b8a;padding:1.4vmin 2.4vmin;border-radius:255px 15px 225px 15px/15px 225px 15px 255px;background:#fffdf3;z-index:2}
+#s7 .ck{position:absolute;z-index:4;font-family:'Permanent Marker',cursive;color:#14a33a;font-size:var(--s);transform:rotate(var(--r));animation:thunk .25s cubic-bezier(.2,2,.4,1) both;pointer-events:none;text-shadow:2px 2px 0 #0b5d20}
+@keyframes thunk{from{transform:rotate(var(--r)) scale(3);opacity:0}}
+#s7 .gremlin{position:absolute;z-index:5;font-size:12vmin;line-height:1;transition:left .25s,top .25s;filter:drop-shadow(.6vmin .6vmin 0 #0003)}
+
+/* ---------- 8 · WHO CHECKS THE CHECKER: constructivist infinite tunnel ---------- */
+#s8{background:#efe3c4;color:#111}
+#s8::before{content:"";position:absolute;left:-20vw;top:58%;width:140vw;height:22vmin;background:#d0021b;transform:rotate(-18deg)}
+#s8::after{content:"";position:absolute;right:-12vmin;top:-12vmin;width:46vmin;height:46vmin;border-radius:50%;background:#111}
+#s8 .tun{position:absolute;left:58%;top:52%;width:0;height:0;z-index:1}
+#s8 .sq{position:absolute;width:56vmin;height:56vmin;left:-28vmin;top:-28vmin;border:1.3vmin solid #111;padding:1.4vmin;font-family:'Russo One',Impact,sans-serif;font-size:3vmin;color:#d0021b;background:#efe3c455;animation:zoom 7s linear infinite;animation-delay:calc(var(--i) * -1s);opacity:0}
+#s8 .sq:nth-child(odd){border-color:#d0021b;color:#111}
+@keyframes zoom{0%{transform:scale(.01) rotate(-30deg);opacity:0}8%{opacity:1}100%{transform:scale(2.8) rotate(35deg);opacity:1}}
+#s8 h1{position:absolute;left:max(4vw,16px);top:max(6vh,env(safe-area-inset-top,0px));z-index:3;font-family:'Russo One',Impact,sans-serif;font-weight:400;font-size:clamp(34px,9vmin,140px);line-height:.92;background:#111;color:#efe3c4;padding:.15em .3em;transform:rotate(-7deg);box-shadow:1.2vmin 1.2vmin 0 #d0021b;max-width:min(90vw,12ch)}
+#s8 .q{position:absolute;z-index:3;font:clamp(9px,1.6vmin,17px)/1.4 var(--f-type);background:#efe3c4;padding:.6em .9em;border:2px solid #111;max-width:34ch}
+#s8 .q.a{left:max(4vw,16px);bottom:max(14vh,env(safe-area-inset-bottom,0px));transform:rotate(3deg)}
+#s8 .q.b{right:max(4vw,16px);top:42vh;transform:rotate(-4deg)}
+
+/* ---------- 9 · GENIUS, CAN'T FIND THE KEYS: corkboard in the dark, a flashlight ---------- */
+#s9{background:#b98a5a radial-gradient(circle,#a2733f 1px,transparent 1.5px) 0 0/9px 9px;cursor:none}
+#s9 .pi{position:absolute;width:clamp(90px,22vmin,260px);padding:2vmin;background:#ffe94a;box-shadow:.6vmin .9vmin 1.4vmin #0006;font-family:'Permanent Marker',cursive;font-size:clamp(11px,2.6vmin,30px);color:#222;line-height:1.1;transform:rotate(var(--r))}
+#s9 .pi.pink{background:#ff8ad8}
+#s9 .pi.blue{background:#7fd6ff}
+#s9 .keys{position:absolute;right:9vw;bottom:14vh;font-size:7vmin;transform:rotate(30deg)}
+#s9 .dark{position:absolute;inset:0;z-index:5;pointer-events:none;background:radial-gradient(circle at var(--x,50%) var(--y,50%),transparent 0,transparent 13vmin,#000000f5 24vmin)}
+#s9 h1{position:absolute;left:16px;right:16px;bottom:max(6vh,env(safe-area-inset-bottom,0px));z-index:6;text-align:center;font-family:Bungee,Impact,sans-serif;font-weight:400;font-size:clamp(26px,7vmin,104px);line-height:1;color:#f2f2f2;text-shadow:0 0 3vmin #000}
+
+/* ---------- 10 · UGLY CODE 100 KM/H: manga speed lines, sausages at full speed ---------- */
+#s10{background:#fff}
+#s10 .rays{position:absolute;inset:-60%;background:repeating-conic-gradient(from 0deg at 50% 50%,#000 0 .7deg,transparent .7deg 3.6deg);animation:jit .09s steps(2) infinite}
+@keyframes jit{50%{transform:rotate(1.3deg) scale(1.02)}}
+#s10 .hole{position:absolute;inset:0;background:radial-gradient(ellipse 46% 36% at 50% 50%,#fff 60%,transparent 100%)}
+#s10 .machine{position:absolute;left:-2vmin;top:50%;width:18vmin;height:30vmin;margin-top:-15vmin;background:#333;border:1vmin solid #000;border-radius:0 3vmin 3vmin 0;z-index:3;display:grid;place-items:center;font-size:9vmin;box-shadow:1vmin 1vmin 0 #ffe600}
+#s10 .machine span{animation:rot 1s linear infinite;display:block}
+#s10 .s{position:absolute;left:10vmin;top:var(--t);font-size:var(--z);z-index:2;animation:fly var(--d) linear infinite;animation-delay:var(--dl)}
+@keyframes fly{from{transform:translateX(0) rotate(0)}to{transform:translateX(115vw) rotate(1440deg)}}
+#s10 h1{position:relative;z-index:4;font-family:Bangers,Impact,sans-serif;font-weight:400;font-size:clamp(46px,13vw,230px);line-height:.85;color:#ffe600;-webkit-text-stroke:.025em #000;paint-order:stroke fill;text-shadow:.05em .05em 0 #000;transform:skew(-12deg) rotate(-4deg);animation:shudder .12s infinite}
+@keyframes shudder{50%{transform:skew(-12deg) rotate(-4deg) translate(2px,-2px)}}
+#s10 .sub{position:relative;z-index:4;margin-top:3vmin;font:clamp(9px,1.8vmin,20px)/1.8 var(--f-mono);background:#000;color:#fff;padding:.6em 1em;transform:rotate(1.5deg)}
+
+/* ---------- 11 · ALL AT ONCE: 50s atomic age stadium card stunt ---------- */
+#s11{background:#0e4a5a;color:#ffe9c7}
+#s11 .burst{position:absolute;font-size:var(--z);color:#ffb703;animation:rot var(--d) linear infinite;top:var(--t);left:var(--l);line-height:1}
+#s11 h1{position:absolute;top:max(3vh,env(safe-area-inset-top,0px));left:16px;right:16px;text-align:center;font-family:Righteous,'Trebuchet MS',sans-serif;font-weight:400;font-size:clamp(36px,10vmin,150px);letter-spacing:.06em;color:#ffe9c7;text-shadow:.06em .06em 0 #e85d04;z-index:3}
+#s11 .grid{position:absolute;left:50%;top:58%;transform:translate(-50%,-50%);width:min(92vw,128vh);display:grid;grid-template-columns:repeat(16,1fr);gap:.45vmin;perspective:900px;z-index:2}
+#s11 .t{aspect-ratio:1;position:relative;transform-style:preserve-3d;animation:flip 7s cubic-bezier(.5,0,.3,1.4) infinite;animation-delay:var(--dl)}
+#s11 .t i,#s11 .t b{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:.4vmin}
+#s11 .t b{transform:rotateY(180deg)}
+@keyframes flip{0%,30%{transform:rotateY(0)}42%,82%{transform:rotateY(180deg)}94%,100%{transform:rotateY(360deg)}}
+#s11 .credit{position:absolute;left:0;right:0;bottom:max(2.5vh,env(safe-area-inset-bottom,0px));text-align:center;font:clamp(9px,1.5vmin,16px) var(--f-mono);color:#8fd3dd;z-index:3}
+
+/* ---------- 12 · THE RECEIPT: thermal paper prints, then a stamp slams ---------- */
+#s12{background:#2a2622 radial-gradient(circle at 50% 30%,#4a433b,#1a1714 70%)}
+#s12 .slot{position:absolute;left:50%;top:0;width:min(88vw,62vmin);height:3.4vmin;transform:translateX(-50%);background:#0d0d0d;border-radius:0 0 1.4vmin 1.4vmin;z-index:3;box-shadow:0 .8vmin 2vmin #000}
+#s12 .paper{position:absolute;left:50%;top:2vmin;width:min(82vw,54vmin);transform:translateX(-50%) rotate(-1.5deg);background:#fbfaf3;color:#222;padding:3vmin 3vmin 5vmin;filter:drop-shadow(0 2vmin 2vmin #0009);clip-path:inset(0 0 100% 0);animation:print 5.5s steps(26) .3s forwards}
+#s12 .paper::after{content:"";position:absolute;left:0;right:0;bottom:-1.6vmin;height:1.6vmin;background:linear-gradient(135deg,#fbfaf3 50%,transparent 50%) 0 0/1.6vmin 1.6vmin,linear-gradient(-135deg,#fbfaf3 50%,transparent 50%) 0 0/1.6vmin 1.6vmin}
+@keyframes print{to{clip-path:inset(0 0 -3vmin 0)}}
+#s12 pre{margin:0;font-family:VT323,ui-monospace,monospace;font-size:clamp(12px,2.9vmin,34px);line-height:1.05;white-space:pre;overflow:hidden}
+#s12 .slam{position:absolute;left:50%;top:60%;z-index:4;translate:-50% 0;font-family:Bungee,Impact,sans-serif;font-size:clamp(28px,8vmin,120px);line-height:.95;text-align:center;color:#e0102a;border:.6vmin solid #e0102a;padding:.2em .4em;border-radius:1vmin;background:#fbfaf3cc;mix-blend-mode:multiply;animation:slam .35s 6.2s cubic-bezier(.2,2.2,.4,1) both;white-space:nowrap}
+@keyframes slam{from{opacity:0;transform:scale(5) rotate(-35deg)}to{opacity:1;transform:scale(1) rotate(-12deg)}}
+
+/* ---------- 13 · WHY DO I PAY YOU: beige office, fluorescent flicker, spinning empty chair ---------- */
+#s13{background:#e6dcc6;color:#3a3326}
+#s13 .tube{position:absolute;left:20vw;right:20vw;top:4vh;height:2vmin;border-radius:2vmin;background:#fff;box-shadow:0 0 6vmin 2vmin #fffbe8;animation:fl 4s steps(1) infinite}
+#s13 .gloom{position:absolute;inset:0;background:#000;opacity:0;animation:gl 4s steps(1) infinite;pointer-events:none;z-index:6}
+@keyframes fl{0%,40%,44%,47%,100%{opacity:1}42%,46%{opacity:.15}}
+@keyframes gl{0%,40%,44%,47%,100%{opacity:0}42%,46%{opacity:.35}}
+#s13 .carpet{position:absolute;left:0;right:0;bottom:0;height:24vh;background:#8c8f86 repeating-linear-gradient(90deg,#0000 0 6px,#0001 6px 7px)}
+#s13 .chair{position:absolute;left:16vw;bottom:14vh;font-size:22vmin;line-height:1;animation:spinny 3s linear infinite}
+@keyframes spinny{to{transform:rotateY(360deg)}}
+#s13 .box{position:absolute;right:14vw;bottom:13vh;font-size:15vmin;line-height:1}
+#s13 .box span{position:absolute;left:18%;top:-55%;font-size:.7em}
+#s13 h1{position:relative;z-index:3;font-family:'Comic Neue','Comic Sans MS',cursive;font-weight:700;font-size:clamp(40px,11vw,190px);line-height:.9;color:#3a3326}
+#s13 h1 em{font-style:normal;color:#d1006f}
+#s13 .slip{position:absolute;top:-20vh;left:56vw;width:16vmin;height:10vmin;background:#ffb3d1;box-shadow:.4vmin .4vmin 0 #0002;font:clamp(8px,1.4vmin,14px) var(--f-type);color:#7a0040;padding:1vmin;animation:flutter 6s ease-in-out infinite;z-index:4}
+@keyframes flutter{0%{transform:translate(0,0) rotate(0)}25%{transform:translate(-8vw,30vh) rotate(25deg)}50%{transform:translate(4vw,60vh) rotate(-20deg)}75%{transform:translate(-4vw,90vh) rotate(18deg)}100%{transform:translate(2vw,130vh) rotate(-10deg)}}
+#s13 cite{position:relative;z-index:3;margin-top:2vmin;font:clamp(10px,1.8vmin,18px) var(--f-type);font-style:normal}
+
+/* ---------- 14 · GRANDPA PREDICTIONS: spinning newspaper, film grain ---------- */
+#s14{background:#0b0906}
+#s14 .np{position:absolute;left:50%;top:50%;width:min(90vw,118vmin);background:#ede2c6;color:#1e160a;padding:3vmin 4vmin 4vmin;animation:spinin 1.8s cubic-bezier(.2,.75,.25,1) both;filter:sepia(.35) contrast(1.05);box-shadow:0 0 0 1px #0003,0 3vmin 8vmin #000}
+@keyframes spinin{from{transform:translate(-50%,-50%) scale(.02) rotate(-1440deg)}to{transform:translate(-50%,-50%) scale(1) rotate(-2.5deg)}}
+#s14 .mast{font-family:UnifrakturMaguntia,'Old English Text MT',serif;font-size:clamp(34px,9.5vmin,130px);text-align:center;line-height:1;border-bottom:.5vmin double #1e160a;padding-bottom:1vmin}
+#s14 .date{display:flex;justify-content:space-between;gap:1em;flex-wrap:wrap;font:clamp(8px,1.5vmin,16px) var(--f-type);border-bottom:2px solid #1e160a;padding:.6vmin 0;text-transform:uppercase;letter-spacing:.1em}
+#s14 .lead{font-family:'Playfair Display',Georgia,serif;font-weight:900;font-size:clamp(26px,7.6vmin,112px);line-height:.95;text-align:center;margin:2.4vmin 0;text-transform:uppercase}
+#s14 .cols{display:grid;grid-template-columns:1fr 1fr;gap:3vmin;border-top:2px solid #1e160a;padding-top:2vmin}
+#s14 .cols h2{margin:0;font-family:'Playfair Display',Georgia,serif;font-weight:900;font-size:clamp(14px,3.4vmin,48px);line-height:1;text-wrap:balance}
+#s14 .cols p{margin:.8vmin 0 0;font:clamp(8px,1.5vmin,16px)/1.3 var(--f-type)}
+#s14 .grain{position:absolute;inset:-50%;z-index:5;pointer-events:none;opacity:.22;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain .5s steps(4) infinite}
+@keyframes grain{25%{transform:translate(-3%,2%)}50%{transform:translate(2%,-3%)}75%{transform:translate(-1%,-1%)}}
+#s14 .vig{position:absolute;inset:0;z-index:6;pointer-events:none;background:radial-gradient(ellipse at center,transparent 45%,#000 100%);animation:flick2 .18s infinite}
+@keyframes flick2{50%{opacity:.85}}
+#s14 .scratch{position:absolute;top:0;bottom:0;width:1px;background:#fff8;z-index:6;animation:scr 1.3s steps(6) infinite}
+@keyframes scr{0%{left:20%}33%{left:71%}66%{left:43%}100%{left:88%}}
+
+/* ---------- 15 · PROTECT YOUR BRAIN TISSUE: a brain in a jar, wearing a helmet ---------- */
+#s15{background:radial-gradient(circle at 50% 66%,#11552a,#031208 65%)}
+#s15 h1{position:absolute;top:max(3vh,env(safe-area-inset-top,0px));left:16px;right:16px;text-align:center;font-family:Creepster,Impact,sans-serif;font-weight:400;font-size:clamp(36px,10vmin,160px);line-height:.95;color:#8dff6a;text-shadow:0 0 2vmin #3cff3c,0 .6vmin 0 #0b3d14;letter-spacing:.03em}
+#s15 .jar{position:absolute;left:50%;bottom:7vh;width:38vmin;height:48vmin;translate:-50% 0;border:.8vmin solid #c9ffd566;border-radius:5vmin 5vmin 4vmin 4vmin;background:linear-gradient(90deg,#7cff6b22,#7cff6b55 30%,#ffffff40 36%,#7cff6b33 46%,#7cff6b22);overflow:hidden;box-shadow:0 0 8vmin #3cff3c55}
+#s15 .lid{position:absolute;left:50%;bottom:calc(7vh + 47vmin);width:42vmin;height:5vmin;translate:-50% 0;background:repeating-linear-gradient(90deg,#9aa3a8 0 1vmin,#6d767b 1vmin 2vmin);border-radius:1vmin}
+#s15 .brain{position:absolute;left:50%;top:44%;translate:-50% -50%;font-size:22vmin;line-height:1;animation:float 3s ease-in-out infinite}
+#s15 .brain span{position:absolute;left:50%;top:-34%;translate:-50% 0;font-size:.62em}
+@keyframes float{50%{transform:translateY(-2.4vmin) rotate(4deg)}}
+#s15 .bub{position:absolute;bottom:-4vmin;left:var(--x);width:var(--s);height:var(--s);border-radius:50%;border:2px solid #d9ffe0aa;animation:rise var(--d) linear infinite;animation-delay:var(--dl)}
+@keyframes rise{to{transform:translateY(-56vmin) translateX(2vmin)}}
+#s15 .label{position:absolute;left:50%;bottom:9vh;translate:-50% 0;width:30vmin;background:#f3ead2;color:#2b2414;font:clamp(8px,1.35vmin,14px)/1.4 var(--f-type);padding:1vmin 1.2vmin;text-align:center;border:1px solid #2b2414;transform:rotate(-2deg);z-index:2}
+#s15 .label b{display:block;font-family:Rye,serif;font-weight:400;font-size:1.25em;margin-bottom:.3em}
+#s15 .rules{position:absolute;left:max(4vw,16px);bottom:max(8vh,env(safe-area-inset-bottom,0px));margin:0;padding:0;list-style:none;font:clamp(10px,2vmin,22px)/1.7 var(--f-type);color:#c9ffd5;max-width:30vw}
+#s15 .rules li::before{content:"☢ ";color:#8dff6a}
+@media (max-width:700px){
+  #s15 .rules{max-width:none;left:16px;right:16px;bottom:auto;top:calc(max(3vh,env(safe-area-inset-top,0px)) + 26vmin);font-size:11px;line-height:1.5}
+  #s14 .cols{grid-template-columns:1fr}
+  #s8 .q.b{top:auto;bottom:30vh}
+}
+</style>
+
+<div id="deck">
+
+<!-- 0 -->
+<section class="slide" id="s0">
+  <div class="cloud" style="--t:6%;--s:22vmin;--d:38s;--dl:-4s">✻</div>
+  <div class="cloud" style="--t:24%;--s:14vmin;--d:26s;--dl:-18s">✳</div>
+  <div class="cloud" style="--t:2%;--s:10vmin;--d:30s;--dl:-9s">❋</div>
+  <div class="cloud" style="--t:40%;--s:18vmin;--d:44s;--dl:-30s">✻</div>
+  <div class="cloud" style="--t:14%;--s:8vmin;--d:22s;--dl:-2s">✳</div>
+  <div class="cloud" style="--t:52%;--s:12vmin;--d:34s;--dl:-12s">❋</div>
+  <div class="center">
+    <h1>Old man yelling at the Claudes</h1>
+    <div class="sub">a stand-up show for devs with brain tissue left</div>
+  </div>
+  <div class="fist">✊</div>
+  <div class="yell">HEY!! YOU!!</div>
+  <div class="hint">→ / space · f = fullscreen</div>
+</section>
+
+<!-- 1 -->
+<section class="slide" id="s1">
+  <div class="sky" data-stars="140"></div>
+  <h1>Nobody knows nothing</h1>
+  <div class="orbit">
+    <span style="--i:0"><b>4,000 PRs / MONTH</b></span>
+    <span style="--i:1"><b>FACTORY OF FACTORIES</b></span>
+    <span style="--i:2"><b>THE END OF CODE</b></span>
+    <span style="--i:3"><b>JUST USE MY SKILLS</b></span>
+    <span style="--i:4"><b>AGI BY TUESDAY</b></span>
+    <span style="--i:5"><b>100× ENGINEER</b></span>
+  </div>
+  <div class="base"></div>
+  <div class="ball"><div class="spin"></div></div>
+</section>
+
+<!-- 2 -->
+<section class="slide" id="s2">
+  <div class="monster"></div>
+  <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+    <path class="cord" vector-effect="non-scaling-stroke" d="M15 84 C 30 100, 40 60, 55 75 S 65 40, 70 50"/>
+    <path class="juice" vector-effect="non-scaling-stroke" d="M70 50 C 65 40, 65 40, 55 75 S 30 100, 15 84"/>
+  </svg>
+  <div class="price">$3,500,000<small>+ $10K/month. order now.</small></div>
+  <div class="laptop">💻</div>
+  <div class="you">YOU</div>
+  <div class="foot">satire. I had to check. that's where we are.</div>
+</section>
+
+<!-- 3 -->
+<section class="slide" id="s3">
+  <div class="bulbs"></div>
+  <div class="coins"></div>
+  <div class="center">
+    <h1>PR PORN</h1>
+    <div class="machine">
+      <div class="reel"><div class="strip" style="--n:21;--dl:.1s"></div></div>
+      <div class="reel"><div class="strip" style="--n:20;--dl:.35s"></div></div>
+      <span class="comma">,</span>
+      <div class="reel"><div class="strip" style="--n:29;--dl:.6s"></div></div>
+      <div class="reel"><div class="strip" style="--n:22;--dl:.85s"></div></div>
+      <div class="reel"><div class="strip" style="--n:26;--dl:1.1s"></div></div>
+      <div class="lever"></div>
+    </div>
+    <div class="cap">MERGED · ONE MONTH · JACKPOT</div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="slide" id="s4">
+  <div class="sky" data-stars="90"></div>
+  <div class="moon"></div>
+  <h1>STABLE<sup>™</sup></h1>
+  <div class="nightly">(nightly)</div>
+  <div class="ground"></div>
+  <svg class="barn" viewBox="0 0 200 170" aria-hidden="true">
+    <polygon points="10,70 100,10 190,70 190,170 10,170" fill="#b3261e"/>
+    <polygon points="0,74 100,4 200,74 190,80 100,18 10,80" fill="#5a1410"/>
+    <rect x="70" y="95" width="60" height="75" fill="#f5e6c4"/>
+    <path d="M72 97 L128 168 M128 97 L72 168" stroke="#b3261e" stroke-width="8"/>
+    <rect x="84" y="44" width="32" height="26" fill="#ffd84a"/>
+    <path d="M100 44 V70 M84 57 H116" stroke="#5a1410" stroke-width="3"/>
+  </svg>
+  <div class="z" style="--dl:0s">z</div>
+  <div class="z" style="--dl:1s">Z</div>
+  <div class="z" style="--dl:2s">z</div>
+</section>
+
+<!-- 5 -->
+<section class="slide" id="s5">
+  <h1>The Slop Relay</h1>
+  <div class="ring">
+    <div class="track"></div>
+    <div class="node" style="--i:0"><div class="pos"><div class="frag card"><b>📋</b>PM<i>"claude, write a ticket"</i></div></div></div>
+    <div class="node" style="--i:1"><div class="pos"><div class="frag card"><b>🧑‍💻</b>DEV<i>"claude, do the ticket"</i></div></div></div>
+    <div class="node" style="--i:2"><div class="pos"><div class="frag card"><b>🔍</b>REVIEWER<i>"claude, review this"</i></div></div></div>
+    <div class="node" style="--i:3"><div class="pos"><div class="frag card"><b>🩹</b>DEV<i>"claude, make the comments go away"</i></div></div></div>
+    <div class="node" style="--i:4"><div class="pos"><div class="frag card"><b>🧪</b>QA<i>"claude, test everything"</i></div></div></div>
+    <div class="node" style="--i:5"><div class="pos"><div class="frag card"><b>🚀</b>SOMEONE<i>"the agent said ok"</i></div></div></div>
+    <div class="node" style="--i:6"><div class="pos"><div class="frag card"><b>💥</b>PROD<i>…</i></div></div></div>
+    <div class="node" style="--i:7"><div class="pos"><div class="frag card"><b>🚨</b>SENTRY<i>"creating ticket…"</i></div></div></div>
+    <div class="baton"><span>📋</span></div>
+    <div class="zero frag"><div class="z0">🧠 × 0</div></div>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="slide" id="s6">
+  <div class="spiral"></div>
+  <div class="rings"></div>
+  <div class="pend"></div>
+  <div class="center"><h1>LOOKS<br>GOOD<br>TO ME</h1></div>
+  <div class="lid t"></div>
+  <div class="lid b"></div>
+</section>
+
+<!-- 7 -->
+<section class="slide" id="s7">
+  <h1>goal-seeking, reward-hacking little bastards<cite>— Mario Zechner</cite></h1>
+  <div class="box" style="left:14vw;top:56vh;transform:rotate(-4deg)">tests</div>
+  <div class="box" style="left:40vw;top:68vh;transform:rotate(3deg)">lint</div>
+  <div class="box" style="left:64vw;top:52vh;transform:rotate(-2deg)">e2e</div>
+  <div class="box" style="left:30vw;top:82vh;transform:rotate(2deg)">the tests of the tests</div>
+  <div class="gremlin">😈</div>
+  <div class="stamps"></div>
+</section>
+
+<!-- 8 -->
+<section class="slide" id="s8">
+  <div class="tun">
+    <div class="sq" style="--i:0">✓ VERIFIED</div>
+    <div class="sq" style="--i:1">✓ VERIFIED</div>
+    <div class="sq" style="--i:2">✓ VERIFIED</div>
+    <div class="sq" style="--i:3">✓ VERIFIED</div>
+    <div class="sq" style="--i:4">✓ VERIFIED</div>
+    <div class="sq" style="--i:5">✓ VERIFIED</div>
+    <div class="sq" style="--i:6">✓ VERIFIED</div>
+  </div>
+  <h1>WHO CHECKS THE CHECKER?</h1>
+  <div class="q a">"It's time to dream big." — Thorsten Ball</div>
+  <div class="q b">"you have no idea if your verifications are worth anything." — Mario Zechner</div>
+  <div class="stamp">NOBODY KNOWS NOTHING</div>
+</section>
+
+<!-- 9 -->
+<section class="slide" id="s9">
+  <div class="pi" style="left:8vw;top:8vh;--r:-6deg">doc/decisions → HERE</div>
+  <div class="pi pink" style="left:36vw;top:5vh;--r:4deg">AGENTS.md: please. PLEASE.</div>
+  <div class="pi blue" style="left:66vw;top:10vh;--r:-3deg">not there.</div>
+  <div class="pi" style="left:14vw;top:38vh;--r:5deg">COMPILER ✓</div>
+  <div class="pi pink" style="left:44vw;top:34vh;--r:-7deg">10× FASTER ✓</div>
+  <div class="pi blue" style="left:72vw;top:40vh;--r:6deg">PUT FILE IN FOLDER ✗</div>
+  <div class="pi" style="left:30vw;top:60vh;--r:-2deg">it's a classification problem. a SIMPLE one.</div>
+  <div class="keys">🔑</div>
+  <div class="dark"></div>
+  <h1>Genius.<br>Can't find the keys.</h1>
+</section>
+
+<!-- 10 -->
+<section class="slide" id="s10">
+  <div class="rays"></div>
+  <div class="hole"></div>
+  <div class="machine"><span>⚙️</span></div>
+  <div class="s" style="--t:18%;--z:7vmin;--d:.9s;--dl:0s">🌭</div>
+  <div class="s" style="--t:72%;--z:9vmin;--d:.7s;--dl:-.3s">🌭</div>
+  <div class="s" style="--t:34%;--z:5vmin;--d:1.1s;--dl:-.6s">🌭</div>
+  <div class="s" style="--t:84%;--z:6vmin;--d:.8s;--dl:-.2s">🌭</div>
+  <div class="s" style="--t:8%;--z:8vmin;--d:1s;--dl:-.75s">🌭</div>
+  <div class="s" style="--t:60%;--z:6vmin;--d:2.6s;--dl:-1.1s">🌟</div>
+  <div class="center">
+    <h1>UGLY CODE.<br>100 KM/H.</h1>
+    <div class="sub">great questions · terrible answers</div>
+  </div>
+  <div class="stamp">NOBODY KNOWS NOTHING</div>
+</section>
+
+<!-- 11 -->
+<section class="slide" id="s11">
+  <div class="burst" style="--t:8%;--l:4%;--z:9vmin;--d:6s">✦</div>
+  <div class="burst" style="--t:12%;--l:88%;--z:7vmin;--d:4s">✴</div>
+  <div class="burst" style="--t:80%;--l:92%;--z:6vmin;--d:5s">✦</div>
+  <div class="burst" style="--t:84%;--l:3%;--z:8vmin;--d:7s">✴</div>
+  <h1>ALL. AT. ONCE.</h1>
+  <div class="grid"></div>
+  <div class="credit">— Stephen Margheim, berlin.rb</div>
+  <div class="stamp">NOBODY KNOWS NOTHING</div>
+</section>
+
+<!-- 12 -->
+<section class="slide" id="s12">
+  <div class="slot"></div>
+  <div class="paper"><pre>
+   ** OLD MAN GAME SHOP **
+      sunday, after lunch
+------------------------------
+1  LANGUAGE (ruby-ish)     ✓
+1  COMPILER (LLVM)         ✓
+1  RENDERER (raylib)       ✓
+1  GAME API                ✓
+------------------------------
+TURNS ..................... 3
+TIME ................. 40 MIN
+MODEL ............ not even a
+                       claude
+------------------------------
+PLAN.md ....... printed AFTER
+
+       IT ALREADY RUNS.
+    THANK YOU, COME AGAIN
+</pre></div>
+  <div class="slam">THE PLAN<br>CAME AFTER</div>
+</section>
+
+<!-- 13 -->
+<section class="slide" id="s13">
+  <div class="tube"></div>
+  <div class="carpet"></div>
+  <div class="chair">🪑</div>
+  <div class="box">📦<span>🪴</span></div>
+  <div class="slip">NOTICE OF TERMINATION · you prompted, we noticed</div>
+  <div class="center">
+    <h1>WHY DO I<br><em>PAY</em> YOU?</h1>
+    <cite>"if I don't have to understand anything anymore, what use are you for?" — Mario Zechner</cite>
+  </div>
+  <div class="gloom"></div>
+</section>
+
+<!-- 14 -->
+<section class="slide" id="s14">
+  <div class="np">
+    <div class="mast">The Daily Grandpa</div>
+    <div class="date"><span>November 2040</span><span>Nobody Knows Nothing Edition</span><span>One cent</span></div>
+    <div class="lead">Apps now build themselves</div>
+    <div class="cols">
+      <div><h2>Skill sharing declared "not worth it"</h2><p>Every app grew its own factory. Copying another app's agent "like wearing someone else's dentures," say experts.</p></div>
+      <div><h2>Local man still reads code. Nobody knows why.</h2><p>"The foundations," he mutters. Family says he's harmless.</p></div>
+    </div>
+  </div>
+  <div class="grain"></div>
+  <div class="vig"></div>
+  <div class="scratch"></div>
+</section>
+
+<!-- 15 -->
+<section class="slide" id="s15">
+  <h1>Protect your brain tissue</h1>
+  <ul class="rules">
+    <li>be critical</li>
+    <li>everyone is selling something</li>
+    <li>ask where they're talking from</li>
+    <li>use your brain</li>
+  </ul>
+  <div class="lid"></div>
+  <div class="jar">
+    <div class="bub" style="--x:20%;--s:2vmin;--d:4s;--dl:0s"></div>
+    <div class="bub" style="--x:60%;--s:1.4vmin;--d:3s;--dl:-1s"></div>
+    <div class="bub" style="--x:80%;--s:2.6vmin;--d:5s;--dl:-2.5s"></div>
+    <div class="bub" style="--x:40%;--s:1vmin;--d:3.5s;--dl:-.5s"></div>
+    <div class="bub" style="--x:10%;--s:1.8vmin;--d:4.6s;--dl:-3s"></div>
+    <div class="brain">🧠<span>⛑️</span></div>
+  </div>
+  <div class="label"><b>Still intact</b>Dex Horthy · Mario Zechner · David Cramer</div>
+</section>
+
+</div>
+<div id="hud"></div>
+
+<script>
+(() => {
+  const slides = [...document.querySelectorAll('.slide')];
+  const hud = document.getElementById('hud');
+  let cur = 0, timers = [], raf = 0;
+
+  // stars
+  document.querySelectorAll('[data-stars]').forEach(sky => {
+    const n = +sky.dataset.stars;
+    for (let k = 0; k < n; k++) {
+      const s = document.createElement('i');
+      s.style.left = Math.random() * 100 + '%';
+      s.style.top = Math.random() * 100 + '%';
+      s.style.setProperty('--d', (1 + Math.random() * 3).toFixed(2) + 's');
+      s.style.animationDelay = (-Math.random() * 3).toFixed(2) + 's';
+      sky.appendChild(s);
+    }
+  });
+
+  // slot reels
+  document.querySelectorAll('#s3 .strip').forEach(st => {
+    let h = '';
+    for (let r = 0; r < 3; r++) for (let d = 0; d < 10; d++) h += '<div>' + d + '</div>';
+    st.innerHTML = h;
+  });
+  const coins = document.querySelector('#s3 .coins');
+  for (let k = 0; k < 14; k++) {
+    const c = document.createElement('div');
+    c.className = 'coin';
+    c.style.setProperty('--x', Math.random() * 96 + '%');
+    c.style.setProperty('--d', (2 + Math.random() * 2.5).toFixed(2) + 's');
+    c.style.setProperty('--dl', (-Math.random() * 4).toFixed(2) + 's');
+    coins.appendChild(c);
+  }
+
+  // card-stunt grid: chaotic patchwork front, coherent target on the back
+  const grid = document.querySelector('#s11 .grid');
+  const chaos = ['#e63946','#f1fa8c','#6a4c93','#43aa8b','#ff7f11','#577590','#f9c74f','#b5838d','#2ec4b6','#ff006e'];
+  const C = 16, R = 9;
+  for (let y = 0; y < R; y++) for (let x = 0; x < C; x++) {
+    const t = document.createElement('div');
+    t.className = 't';
+    t.style.setProperty('--dl', ((x + y) * 0.06).toFixed(2) + 's');
+    const d = Math.hypot(x - 7.5, (y - 4) * 1.05);
+    const back = d < 1.6 ? '#e85d04' : d < 2.9 ? '#ffe9c7' : d < 4.2 ? '#e85d04' : d < 5.5 ? '#ffe9c7' : '#1b6f80';
+    t.innerHTML = '<i style="background:' + chaos[(Math.random() * chaos.length) | 0] + '"></i><b style="background:' + back + '"></b>';
+    grid.appendChild(t);
+  }
+
+  // per-slide live behaviours
+  const live = {
+    s7(slide) {
+      const layer = slide.querySelector('.stamps');
+      const grem = slide.querySelector('.gremlin');
+      layer.innerHTML = '';
+      timers.push(setInterval(() => {
+        const x = 6 + Math.random() * 84, y = 30 + Math.random() * 62;
+        grem.style.left = (x - 4) + 'vw';
+        grem.style.top = (y - 10) + 'vh';
+        const ck = document.createElement('div');
+        ck.className = 'ck';
+        ck.textContent = '✓';
+        ck.style.left = x + 'vw';
+        ck.style.top = y + 'vh';
+        ck.style.setProperty('--s', (4 + Math.random() * 7).toFixed(1) + 'vmin');
+        ck.style.setProperty('--r', (Math.random() * 50 - 25).toFixed(0) + 'deg');
+        layer.appendChild(ck);
+        if (layer.children.length > 70) layer.firstChild.remove();
+      }, 260));
+    },
+    s9(slide) {
+      let last = 0, mx = 50, my = 50;
+      const move = e => {
+        const p = e.touches ? e.touches[0] : e;
+        mx = p.clientX / innerWidth * 100; my = p.clientY / innerHeight * 100; last = performance.now();
+      };
+      slide.onmousemove = move; slide.ontouchmove = move;
+      const loop = t => {
+        let x = mx, y = my;
+        if (t - last > 1500) {
+          x = 50 + Math.sin(t / 900) * 38 + Math.sin(t / 370) * 6;
+          y = 42 + Math.cos(t / 1100) * 28 + Math.sin(t / 290) * 5;
+        }
+        slide.style.setProperty('--x', x + '%');
+        slide.style.setProperty('--y', y + '%');
+        raf = requestAnimationFrame(loop);
+      };
+      raf = requestAnimationFrame(loop);
+    }
+  };
+
+  function go(n, dir) {
+    n = Math.max(0, Math.min(slides.length - 1, n));
+    timers.forEach(clearInterval); timers = [];
+    cancelAnimationFrame(raf);
+    slides[cur].classList.remove('active');
+    cur = n;
+    const s = slides[cur];
+    s.querySelectorAll('.frag').forEach(f => f.classList.toggle('on', dir < 0));
+    s.classList.add('active');
+    if (live[s.id]) live[s.id](s);
+    hud.textContent = (cur + 1) + ' / ' + slides.length;
+    try { history.replaceState(null, '', '#' + s.id); } catch (e) {}
+  }
+  function next() {
+    const f = slides[cur].querySelector('.frag:not(.on)');
+    if (f) f.classList.add('on'); else if (cur < slides.length - 1) go(cur + 1, 1);
+  }
+  function prev() { if (cur > 0) go(cur - 1, -1); }
+
+  addEventListener('keydown', e => {
+    if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); next(); }
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); prev(); }
+    else if (e.key === 'Home') go(0, 1);
+    else if (e.key === 'End') go(slides.length - 1, -1);
+    else if (e.key === 'f') {
+      try { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen().catch(() => {}); } catch (err) {}
+    }
+  });
+  addEventListener('click', e => { (e.clientX > innerWidth * 0.3 ? next : prev)(); });
+  let tx = null;
+  addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+  addEventListener('touchend', e => {
+    if (tx === null) return;
+    const dx = e.changedTouches[0].clientX - tx; tx = null;
+    if (Math.abs(dx) > 40) (dx < 0 ? next : prev)();
+  });
+
+  const start = slides.findIndex(s => '#' + s.id === location.hash);
+  slides[0].classList.add('active');
+  go(start > 0 ? start : 0, 1);
+})();
+</script>

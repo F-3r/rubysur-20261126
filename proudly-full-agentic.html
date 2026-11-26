@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proudly Full Agentic™ Certification</title>
+<style>
+  :root { --hot:#ff2d95; --lime:#c6ff00; --ink:#0b0b1a; --gold:#ffd400; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: "Arial Black", Impact, system-ui, sans-serif; background: var(--ink); color:#fff; overflow-x:hidden; }
+  .ticker { position: sticky; top: 0; z-index: 10; background: var(--lime); color: var(--ink); white-space: nowrap; overflow:hidden; font-size:14px; padding:8px 0; }
+  .ticker span { display:inline-block; padding-left:100%; animation: tick 28s linear infinite; }
+  @keyframes tick { to { transform: translateX(-100%); } }
+  header { text-align:center; padding:60px 16px 40px; background: radial-gradient(circle at 50% 0%, #4b00ff 0%, var(--ink) 70%); }
+  .badge { width:180px; height:180px; margin:0 auto 24px; border-radius:50%; background: conic-gradient(var(--gold), #fff3a0, var(--gold), #b38f00, var(--gold)); display:flex; align-items:center; justify-content:center; color:var(--ink); font-size:20px; line-height:1.05; box-shadow:0 0 60px var(--gold); animation: spin 9s linear infinite; }
+  .badge div { animation: spin 9s linear infinite reverse; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  h1 { font-size: clamp(36px, 8vw, 88px); margin:0; line-height:.95; text-transform:uppercase; background: linear-gradient(90deg, var(--hot), var(--gold), var(--lime)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .sub { font-family: system-ui, sans-serif; font-size: 20px; max-width: 680px; margin: 20px auto; color:#d8d8ff; }
+  .cta { display:inline-block; margin-top:16px; background: var(--hot); color:#fff; border:none; font: inherit; font-size: 24px; padding: 18px 36px; border-radius: 999px; cursor:pointer; box-shadow: 0 8px 0 #a3005c; animation: pulse 1.2s ease-in-out infinite; }
+  .cta:active { transform: translateY(6px); box-shadow: 0 2px 0 #a3005c; }
+  @keyframes pulse { 50% { transform: scale(1.06); } }
+  .timer { font-family: system-ui, sans-serif; margin-top: 14px; color: var(--lime); font-size: 15px; }
+  section { padding: 56px 16px; max-width: 1040px; margin: 0 auto; }
+  h2 { font-size: clamp(28px, 5vw, 48px); text-align:center; margin: 0 0 28px; }
+  .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 18px; }
+  .card { background: #17173a; border: 3px solid var(--hot); border-radius: 18px; padding: 22px; font-family: system-ui, sans-serif; }
+  .card b { font-family: "Arial Black", Impact, sans-serif; display:block; font-size: 20px; margin-bottom: 8px; color: var(--gold); }
+  .relay { display:flex; flex-wrap:wrap; justify-content:center; gap:8px; font-family: system-ui, sans-serif; }
+  .relay span { background:#fff; color:var(--ink); padding:10px 14px; border-radius:10px; font-weight:700; }
+  .relay i { color: var(--lime); font-style:normal; align-self:center; font-size:22px; }
+  .price { text-align:center; background: var(--gold); color: var(--ink); border-radius: 28px; padding: 40px 16px; transform: rotate(-1.5deg); }
+  .price .big { font-size: clamp(64px, 14vw, 140px); line-height:1; }
+  .price .old { text-decoration: line-through; font-size: 28px; opacity:.6; }
+  .price ul { list-style:none; padding:0; font-family: system-ui, sans-serif; font-size:18px; }
+  .price li::before { content: "✅ "; }
+  .quotes .card { border-color: var(--lime); font-style: italic; }
+  .quotes .card small { display:block; margin-top:10px; font-style:normal; color:#9a9acb; }
+  .faq details { background:#17173a; border-radius:12px; padding:16px 20px; margin-bottom:10px; font-family: system-ui, sans-serif; }
+  .faq summary { cursor:pointer; font-weight:800; }
+  footer { text-align:center; font-family: system-ui, sans-serif; font-size: 12px; color:#7a7aa8; padding: 40px 16px; }
+  #toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(200%); background: var(--lime); color: var(--ink); padding: 16px 22px; border-radius: 14px; font-family: system-ui, sans-serif; font-weight: 800; transition: transform .3s; max-width: calc(100% - 32px); text-align:center; }
+  #toast.show { transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="ticker"><span>🔥 Mega Corp just got certified in 11 seconds &nbsp;•&nbsp; 🚀 11,000 PRs merged this month, 0 read &nbsp;•&nbsp; 💯 Nobody on this team has opened an editor since March &nbsp;•&nbsp; ⚡ LIMITED OFFER: certify your whole company before your agent does it for you &nbsp;•&nbsp; 🏆 Stable release cut nightly &nbsp;•&nbsp;</span></div>
+
+<header>
+  <div class="badge"><div>PROUDLY<br>FULL<br>AGENTIC™</div></div>
+  <h1>Proudly Full Agentic™<br>Certification</h1>
+  <p class="sub">The industry's first certification that proves no human in your company has had a thought since Q2. Show clients, investors and your mom that your entire org runs on agents, end to end, top to bottom, ticket to incident.</p>
+  <button class="cta" onclick="buy()">GET CERTIFIED NOW — $100</button>
+  <div class="timer">⏰ Offer ends in <span id="t">09:59</span> (it resets, don't worry about it)</div>
+</header>
+
+<section>
+  <h2>Are you Full Agentic™? Take the test.</h2>
+  <div class="relay">
+    <span>🤖 PM agent writes ticket</span><i>→</i>
+    <span>🤖 Dev agent writes code</span><i>→</i>
+    <span>🤖 Reviewer agent approves</span><i>→</i>
+    <span>🤖 QA agent tests</span><i>→</i>
+    <span>🤖 Deploy agent ships</span><i>→</i>
+    <span>🔥 Prod</span><i>→</i>
+    <span>🤖 Other people agents use your app</span><i>→</i>
+    <span>🤖 Sentry agent writes ticket</span><i>↺</i>
+  </div>
+  <p class="sub" style="text-align:center">If you recognize your company, congratulations: you already qualify. If a human appears anywhere in this loop, our agents will gently remove them.</p>
+</section>
+
+<section>
+  <h2>What you get</h2>
+  <div class="grid">
+    <div class="card"><b>🏅 Shiny Badge</b>For your website, LinkedIn and email signature. Generated by an agent, approved by an agent, emailed by an agent.</div>
+    <div class="card"><b>📜 Certificate PDF</b>4,000 pages. Nobody will read it. That's the point.</div>
+    <div class="card"><b>✅ Self-Verified Audit</b>Our agent checks your agents' work by asking your agents if their work is good. 100% pass rate since launch.</div>
+    <div class="card"><b>🧠 Brain Tissue Buyback</b>Unused brain tissue? Trade it in for 3 extra skills.md files.</div>
+  </div>
+</section>
+
+<section>
+  <div class="price">
+    <div class="old">$4,999 per person</div>
+    <div class="big">$100</div>
+    <div style="font-size:22px">per person • per agent • per vibe</div>
+    <ul>
+      <li>Unlimited PRs (minimum 11K/month)</li>
+      <li>Zero code reviews, guaranteed</li>
+      <li>Certificate renewed nightly (stable)</li>
+      <li>Priority support from an agent that never read your ticket</li>
+    </ul>
+    <button class="cta" onclick="buy()">CERTIFY MY ENTIRE COMPANY</button>
+  </div>
+</section>
+
+<section class="quotes">
+  <h2>Trusted by leaders</h2>
+  <div class="grid">
+    <div class="card">"We merged 396 files yesterday. I have no idea what any of them do. 10/10."<small>— VP of Velocity, Unnamed Unicorn</small></div>
+    <div class="card">"Our reviewer agent replied with a meme and approved. Shipped in 4 minutes."<small>— Head of Engineering (former)</small></div>
+    <div class="card">"I used to understand our architecture. Now I understand our invoice."<small>— CTO, Series B</small></div>
+  </div>
+</section>
+
+<section class="faq">
+  <h2>FAQ</h2>
+  <details><summary>Do I need to read anything to get certified?</summary>Absolutely not. Reading disqualifies you.</details>
+  <details><summary>Who verifies the certification?</summary>Your agents. They are very confident about it.</details>
+  <details><summary>What if something breaks in production?</summary>An agent will open a ticket. Another agent will close it. Certification remains valid.</details>
+  <details><summary>Can humans get certified?</summary>Only as a "legacy dependency". $100 still applies.</details>
+</section>
+
+<footer>© Proudly Full Agentic™ Institute. No agents were harmed; several humans were mildly ignored.</footer>
+
+<div id="toast"></div>
+
+<script>
+  let s = 599;
+  setInterval(() => { s = s > 0 ? s - 1 : 599; document.getElementById('t').textContent = String(Math.floor(s/60)).padStart(2,'0') + ':' + String(s%60).padStart(2,'0'); }, 1000);
+  const msgs = [
+    "✅ Certified! Our agent approved your payment without looking at it.",
+    "🏅 Congratulations, you're Proudly Full Agentic™.",
+    "🤖 Your certificate PDF is 4,000 pages. Please do not read it."
+  ];
+  let i = 0;
+  function buy() {
+    const t = document.getElementById('toast');
+    t.textContent = msgs[i++ % msgs.length];
+    t.classList.add('show');
+    clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('show'), 3500);
+  }
+  // when embedded in the slide deck, hand slide navigation keys to it
+  if (window.parent !== window) document.addEventListener('keydown', e => {
+    const d = { ArrowRight: 1, PageDown: 1, ArrowLeft: -1, PageUp: -1 }[e.key];
+    if (d) { e.preventDefault(); window.parent.postMessage({ deck: d }, '*'); }
+    else if (e.key === 'f') window.parent.postMessage({ deck: 'fullscreen' }, '*');
+  });
+</script>
+</body>
+</html>
