@@ -1094,21 +1094,22 @@ orders-api → Redis (sessions, cart) → SQS (order events) → fulfillment</pr
   </aside>
 </section>
 
-<section class="slide pq">
-  <img src="material/dex-eugeneyan-attention.png" style="width:70vw;height:auto;max-height:72vh;object-fit:contain" alt="dex (@dexhorthy): this guy @eugeneyan gets it. Quoting swyx: Cost per task is a misleading metric; the scarce resource is human attention, not token cost. beware the pareto frontier charts that make you believe you can reduce every model to 2 numbers; it can hide some AWFUL reliability issues">
-  <cite>Dex Horthy · <a href="https://ai.engineer/talks/Ib5GBkD555M-harness-engineering-is-not-enough-why-software" target="_blank" rel="noopener">Harness engineering is not enough</a></cite>
-</section>
-
-<section class="slide claim list">
-  <b>The code is the specification</b>
-  <b class="next">Every codebase is its own beast</b>
-  <b class="next">Every artifact is an opportunity to miss something</b>
-  <small>fewer artifacts · shorter artifacts · review where it's worth more</small>
+<section class="slide claim list steps">
+  <b>The code is disposable</b>
+  <b class="next step" data-s="0">Human attention is scarce</b>
+  <b class="next step" data-s="1">Build a flow that maximizes the chances to inject judgement</b>
+  <small class="step" data-s="2">→ that's where the value goes up</small>
   <aside class="notes">
     <ul>
+      <li>El código es descartable. La atención humana es escasa. Entonces, lo que tenemos que hacer es desarrollar un flujo que maximice las posibilidades de inyectar juicio crítico. Y de esa manera aumentar el valor.</li>
       <li>I think the whole material selection is wrong for this section. The idea would be to talk a little bit about open specs and those huge skill packs, and pre-made software factories, agentic factories, AI factories, that I think they don&#x27;t work because of this, because they&#x27;re basically slot machines that generates a ton of intermediary artifacts, and the key is every artifact is an opportunity to miss something. It&#x27;s something you must review, and it&#x27;s an opportunity to miss something. So the less artifacts we have, the better the system will work. And the shorter the artifacts, the better. In a sense, is we need to stop reviewing, but not to stop reviewing, but concentrate the amount of review where it is worth more, as much as possible. Again, we are talking once again about value.</li>
     </ul>
   </aside>
+</section>
+
+<section class="slide pq">
+  <img src="material/dex-eugeneyan-attention.png" style="width:70vw;height:auto;max-height:72vh;object-fit:contain" alt="dex (@dexhorthy): this guy @eugeneyan gets it. Quoting swyx: Cost per task is a misleading metric; the scarce resource is human attention, not token cost. beware the pareto frontier charts that make you believe you can reduce every model to 2 numbers; it can hide some AWFUL reliability issues">
+  <cite>Dex Horthy · <a href="https://ai.engineer/talks/Ib5GBkD555M-harness-engineering-is-not-enough-why-software" target="_blank" rel="noopener">Harness engineering is not enough</a></cite>
 </section>
 
 <section class="slide claim huge">
